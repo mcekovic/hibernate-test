@@ -6,12 +6,17 @@ import org.springframework.stereotype.*;
 import org.springframework.transaction.annotation.*;
 
 @Repository
-public class TournamentRepository {
+public class TournamentRepository extends JPARepository<Tournament> {
 
-	@PersistenceContext private EntityManager em;
+	public TournamentRepository() {
+		super(Tournament.class);
+	}
 
-	@Transactional
-	public void create(Tournament tournament) {
-		em.persist(tournament);
+	@Transactional(readOnly = true)
+	public Tournament findByName(String name) {
+		TypedQuery<Tournament> query = em.createQuery("from Tournament t where t.name = :name", Tournament.class);
+		query.setParameter("name", name);
+		query.setHint(HINT_CACHEABLE, Boolean.TRUE);
+		return query.getSingleResult();
 	}
 }

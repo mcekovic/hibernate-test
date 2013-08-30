@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import org.hibernate.annotations.Cache;
 import org.joda.time.*;
 
+import com.finsoft.util.*;
+
 import static javax.persistence.FetchType.*;
 import static javax.persistence.TemporalType.*;
 import static org.hibernate.annotations.CacheConcurrencyStrategy.*;
@@ -27,6 +29,10 @@ public class Player {
 	@MapKeyEnumerated @MapKeyColumn(name="PHONE_TYPE")	@Column(name="PHONE")
 	@OrderBy("PHONE_TYPE")
 	private Map<PhoneType, String> phones = new TreeMap<>();
+
+	@OneToMany(mappedBy = "playerTitleId.player", fetch = LAZY)
+	@OrderBy("titleCount desc")
+	private List<PlayerTitle> titles = new ArrayList<>();
 
 	public Player() {}
 
@@ -74,11 +80,38 @@ public class Player {
 		this.addresses = address;
 	}
 
+	public void addAddress(Address address) {
+		getAddresses().add(address);
+	}
+
 	public Map<PhoneType, String> getPhones() {
 		return phones;
 	}
 
 	public void setPhones(Map<PhoneType, String> phones) {
 		this.phones = phones;
+	}
+
+	public void addPhone(PhoneType type, String phone) {
+		getPhones().put(type, phone);
+	}
+
+	public List<PlayerTitle> getTitles() {
+		return titles;
+	}
+
+	public void setTitles(List<PlayerTitle> titles) {
+		this.titles = titles;
+	}
+
+	public void addTitle(Tournament tournament, int count) {
+		getTitles().add(new PlayerTitle(this, tournament, count));
+	}
+
+	public int getTitleCount() {
+		int count = 0;
+		for (PlayerTitle title : getTitles())
+			count += title.getTitleCount();
+		return count;
 	}
 }

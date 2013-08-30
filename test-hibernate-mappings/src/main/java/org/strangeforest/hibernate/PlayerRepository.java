@@ -6,17 +6,16 @@ import org.springframework.stereotype.*;
 import org.springframework.transaction.annotation.*;
 
 @Repository
-public class PlayerRepository {
+public class PlayerRepository extends JPARepository<Player> {
 
-	@PersistenceContext private EntityManager em;
-
-	private static final String HINT_CACHEABLE = "org.hibernate.cacheable";
+	public PlayerRepository() {
+		super(Player.class);
+	}
 
 	@Transactional(readOnly = true)
-	public Player findById(long id) {
-		Player player = em.find(Player.class, id);
-		if (player == null)
-			throw new EntityNotFoundException();
+	public Player findByIdWithTitles(long id) {
+		Player player = findById(id);
+		player.getTitles().size();
 		return player;
 	}
 
@@ -26,20 +25,5 @@ public class PlayerRepository {
 		query.setParameter("name", name);
 		query.setHint(HINT_CACHEABLE, Boolean.TRUE);
 		return query.getSingleResult();
-	}
-
-	@Transactional
-	public void create(Player player) {
-		em.persist(player);
-	}
-
-	@Transactional
-	public void save(Player player) {
-		em.merge(player);
-	}
-
-	@Transactional
-	public void delete(Player player) {
-		em.remove(player);
 	}
 }

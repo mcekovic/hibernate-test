@@ -29,7 +29,7 @@ public class PlayerRepositoryIT extends AbstractTestNGSpringContextTests {
 
 	@BeforeSuite
 	public void setUpSuite() {
-		ITUtil.deleteFiles(System.getProperty("user.home") + "/.hibernate-test/h2", ".*");
+//		ITUtil.deleteFiles(System.getProperty("user.home") + "/.hibernate-test/h2", ".*");
 	}
 
 	@BeforeClass
@@ -81,7 +81,7 @@ public class PlayerRepositoryIT extends AbstractTestNGSpringContextTests {
 	@Test(dependsOnMethods = "playerResidenceIsUpdated")
 	public void playerAddressIsAdded() {
 		Player player = getPlayer();
-		player.getAddresses().add(new Address("Pere Perica", "21b", "Zagubica", "12345", "Srbistan"));
+		player.addAddress(new Address("Pere Perica", "21b", "Zagubica", "12345", "Srbistan"));
 		players.save(player);
 
 		List<Address> addresses = getPlayer().getAddresses();
@@ -94,8 +94,8 @@ public class PlayerRepositoryIT extends AbstractTestNGSpringContextTests {
 		String phoneNumber1 = "+381 64 2134-032";
 		String phoneNumber2 = "+654 12 3465-432";
 		Player player = getPlayer();
-		player.getPhones().put(PhoneType.MOBILE, phoneNumber1);
-		player.getPhones().put(PhoneType.HOME, phoneNumber2);
+		player.addPhone(PhoneType.MOBILE, phoneNumber1);
+		player.addPhone(PhoneType.HOME, phoneNumber2);
 		players.save(player);
 
 		Map<PhoneType, String> phones = getPlayer().getPhones();
@@ -105,6 +105,20 @@ public class PlayerRepositoryIT extends AbstractTestNGSpringContextTests {
 	}
 
 	@Test(dependsOnMethods = "playerPhonesAreAdded")
+	public void playerTitlesAreAdded() {
+		Tournament australianOpen = tournaments.findByName("Australian Open");
+		Tournament wimbledon = tournaments.findByName("Wimbledon");
+		Tournament usOpen = tournaments.findByName("US Open");
+		Player player = getPlayerWithTitles();
+		player.addTitle(australianOpen, 4);
+		player.addTitle(wimbledon, 1);
+		player.addTitle(usOpen, 1);
+		players.save(player);
+
+		assertThat(getPlayerWithTitles().getTitleCount(), is(equalTo(6)));
+	}
+
+	@Test(dependsOnMethods = "playerTitlesAreAdded")
 	public void playerIsFoundByName() {
 		Player player = players.findByName(PLAYER_NAME);
 		Player player2 = players.findByName(PLAYER_NAME);
@@ -118,5 +132,9 @@ public class PlayerRepositoryIT extends AbstractTestNGSpringContextTests {
 
 	private Player getPlayer() {
 		return players.findById(playerId);
+	}
+
+	private Player getPlayerWithTitles() {
+		return players.findByIdWithTitles(playerId);
 	}
 }
