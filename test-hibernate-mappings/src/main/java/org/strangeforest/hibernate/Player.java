@@ -20,10 +20,12 @@ public class Player {
 	@Embedded private Address residence;
 
 	@ElementCollection(fetch = EAGER) @Cache(usage = READ_WRITE)
+	@OrderBy("country,city,postCode,street,streetNumber")
 	private List<Address> addresses = new ArrayList<>();
 
 	@ElementCollection(fetch = EAGER) @Cache(usage = READ_WRITE)
 	@MapKeyEnumerated @MapKeyColumn(name="PHONE_TYPE")	@Column(name="PHONE")
+	@OrderBy("PHONE_TYPE")
 	private Map<PhoneType, String> phones = new TreeMap<>();
 
 	public Player() {}

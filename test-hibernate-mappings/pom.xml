@@ -18,6 +18,14 @@
 	<build>
 		<plugins>
 			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
+			<plugin>
 				<artifactId>maven-failsafe-plugin</artifactId>
 				<version>2.16</version>
 				<executions>
@@ -134,10 +142,6 @@
 				<exclusion>
 					<artifactId>junit</artifactId>
 					<groupId>junit</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>jcommander</artifactId>
-					<groupId>com.beust</groupId>
 				</exclusion>
 			</exclusions>
 		</dependency>
