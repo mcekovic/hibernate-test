@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:c="http://www.springframework.org/schema/c"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+                           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+	<context:component-scan annotation-config="true" base-package="org.strangeforest.hibernate"/>
+	<tx:annotation-driven/>
+
+	<bean id="h2DataSource" class="org.h2.jdbcx.JdbcConnectionPool" destroy-method="dispose">
+		<constructor-arg>
+			<bean class="org.h2.jdbcx.JdbcDataSource">
+				<property name="URL" value="jdbc:h2:~/.hibernate-test/h2/test-db"/>
+				<property name="user" value="SA"/>
+				<property name="password" value="SA"/>
+			</bean>
+		</constructor-arg>
+	</bean>
+
+	<bean id="dataSource" class="com.finsoft.db.ConnectionPoolDataSource" init-method="init" destroy-method="close">
+		<constructor-arg index="0" name="driverClass" value="org.h2.Driver"/>
+		<constructor-arg index="1" name="dbURL" value="jdbc:h2:~/.hibernate-test/h2/test-db"/>
+		<constructor-arg index="2" name="username" value="SA"/>
+		<constructor-arg index="3" name="password" value="SA"/>
+		<property name="initialPoolSize" value="0"/>
+		<property name="minPoolSize" value="0"/>
+		<property name="maxPoolSize" value="5"/>
+		<property name="minIdleCount" value="1"/>
+		<property name="maxPendingCount" value="5"/>
+		<property name="checkQuery" value="SELECT 1"/>
+		<property name="checkTime" value="60"/>
+		<property name="maxWaitTime" value="0"/>
+		<property name="maxIdleTime" value="300"/>
+		<property name="maxBusyTime" value="600"/>
+		<property name="maxLiveTime" value="3600"/>
+		<property name="propertyCycle" value="60"/>
+		<property name="maxStatements" value="100"/>
+		<property name="logger">
+			<bean class="com.finsoft.db.logging.DBConnectionPoolLogger" c:loggerName="org.strangeforest.hibernate.jdbc"/>
+		</property>
+		<property name="collectStatementStatistics" value="true"/>
+	</bean>
+
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory"/>
+	</bean>
+
+	<bean class="org.springframework.orm.hibernate4.HibernateExceptionTranslator"/>
+
+	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="persistenceUnitName" value="TestPersistenceUnit"/>
+		<property name="packagesToScan" value="org.strangeforest.hibernate"/>
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" p:database="H2" p:generateDdl="true" p:showSql="true"/>
+		</property>
+		<property name="dataSource">
+			<bean class="org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy" c:targetDataSource-ref="dataSource"/>
+		</property>
+		<property name="jpaProperties">
+			<props>
+				<prop key="hibernate.format_sql">true</prop>
+				<prop key="hibernate.cache.use_second_level_cache">true</prop>
+				<prop key="hibernate.cache.use_query_cache">true</prop>
+				<prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</prop>
+			</props>
+		</property>
+	</bean>
+
+</beans>
