@@ -8,7 +8,7 @@
                            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
                            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-	<context:component-scan annotation-config="true" base-package="org.strangeforest.hibernate"/>
+	<context:component-scan annotation-config="true" base-package="org.strangeforest.hibernate.repositories"/>
 	<tx:annotation-driven/>
 
 	<bean id="h2DataSource" class="org.h2.jdbcx.JdbcConnectionPool" destroy-method="dispose">
@@ -53,7 +53,7 @@
 
 	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="persistenceUnitName" value="TestPersistenceUnit"/>
-		<property name="packagesToScan" value="org.strangeforest.hibernate"/>
+		<property name="packagesToScan" value="org.strangeforest.hibernate.entities"/>
 		<property name="jpaVendorAdapter">
 			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" p:database="H2" p:generateDdl="true" p:showSql="true"/>
 		</property>

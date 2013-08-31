@@ -1,4 +1,4 @@
-package org.strangeforest.hibernate;
+package org.strangeforest.hibernate.entities;
 
 import java.io.*;
 import javax.persistence.*;

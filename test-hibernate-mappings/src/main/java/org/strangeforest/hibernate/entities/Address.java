@@ -1,15 +1,15 @@
-package org.strangeforest.hibernate;
+package org.strangeforest.hibernate.entities;
 
 import javax.persistence.*;
 
 @Embeddable
 public class Address {
 
-	@Column private String street;
-	@Column private String streetNumber;
-	@Column private String city;
-	@Column private String postCode;
-	@Column private String country;
+	private String street;
+	private String streetNumber;
+	private String city;
+	private String postCode;
+	private String country;
 
 	public Address() {}
 

@@ -1,9 +1,10 @@
-package org.strangeforest.hibernate;
+package org.strangeforest.hibernate.repositories;
 
 import javax.persistence.*;
 
 import org.springframework.stereotype.*;
 import org.springframework.transaction.annotation.*;
+import org.strangeforest.hibernate.entities.*;
 
 @Repository
 public class TournamentRepository extends JPARepository<Tournament> {

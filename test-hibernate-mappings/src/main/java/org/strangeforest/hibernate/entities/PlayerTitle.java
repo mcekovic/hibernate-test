@@ -1,4 +1,4 @@
-package org.strangeforest.hibernate;
+package org.strangeforest.hibernate.entities;
 
 import javax.persistence.*;
 
@@ -6,7 +6,7 @@ import javax.persistence.*;
 public class PlayerTitle {
 
 	@EmbeddedId PlayerTitleId playerTitleId;
-	@Column int titleCount;
+	int titleCount;
 
 	public PlayerTitle() {}
 

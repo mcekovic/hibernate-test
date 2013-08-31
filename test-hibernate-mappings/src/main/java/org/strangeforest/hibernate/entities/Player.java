@@ -1,11 +1,10 @@
-package org.strangeforest.hibernate;
+package org.strangeforest.hibernate.entities;
 
 import java.util.*;
 import javax.persistence.CascadeType;
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.OrderBy;
-import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.joda.time.*;
@@ -15,12 +14,11 @@ import static javax.persistence.TemporalType.*;
 import static org.hibernate.annotations.CacheConcurrencyStrategy.*;
 
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = "name"))
 public class Player {
 
 	@Id @GeneratedValue private long id;
-	@Column private String name;
-	@Column @Temporal(DATE) private Date dateOfBirth;
+	@Column(unique = true) private String name;
+	@Temporal(DATE) private Date dateOfBirth;
 	@Embedded private Address residence;
 
 	@ElementCollection(fetch = EAGER) @Cache(usage = READ_WRITE)

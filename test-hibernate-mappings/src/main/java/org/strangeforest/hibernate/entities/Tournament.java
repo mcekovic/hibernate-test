@@ -1,13 +1,12 @@
-package org.strangeforest.hibernate;
+package org.strangeforest.hibernate.entities;
 
 import javax.persistence.*;
 
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = "name"))
 public class Tournament {
 
 	@Id @GeneratedValue private long id;
-	@Column private String name;
+	@Column(unique = true) private String name;
 
 	public Tournament() {}
 

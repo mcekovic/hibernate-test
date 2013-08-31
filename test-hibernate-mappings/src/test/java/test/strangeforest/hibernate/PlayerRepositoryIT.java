@@ -7,7 +7,8 @@ import org.joda.time.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.test.context.*;
 import org.springframework.test.context.testng.*;
-import org.strangeforest.hibernate.*;
+import org.strangeforest.hibernate.entities.*;
+import org.strangeforest.hibernate.repositories.*;
 import org.testng.annotations.*;
 
 import com.fasterxml.jackson.databind.*;
