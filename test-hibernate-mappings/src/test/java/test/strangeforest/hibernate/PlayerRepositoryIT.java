@@ -29,7 +29,7 @@ public class PlayerRepositoryIT extends AbstractTestNGSpringContextTests {
 
 	@BeforeSuite
 	public void setUpSuite() {
-//		ITUtil.deleteFiles(System.getProperty("user.home") + "/.hibernate-test/h2", ".*");
+		ITUtil.deleteFiles(System.getProperty("user.home") + "/.hibernate-test/h2", ".*");
 	}
 
 	@BeforeClass

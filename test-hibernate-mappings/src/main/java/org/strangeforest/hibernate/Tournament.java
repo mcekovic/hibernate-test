@@ -3,6 +3,7 @@ package org.strangeforest.hibernate;
 import javax.persistence.*;
 
 @Entity
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = "name"))
 public class Tournament {
 
 	@Id @GeneratedValue private long id;
