@@ -3,13 +3,11 @@ package org.strangeforest.hibernate.entities;
 import java.io.*;
 import javax.persistence.*;
 
-import static javax.persistence.FetchType.*;
-
 @Embeddable
 public class PlayerTitleId implements Serializable {
 
-	@ManyToOne(fetch = LAZY) private Player player;
-	@ManyToOne(fetch = LAZY) private Tournament tournament;
+	@ManyToOne private Player player;
+	@ManyToOne private Tournament tournament;
 
 	public PlayerTitleId() {}
 

@@ -9,11 +9,11 @@ public class Address {
 	private String streetNumber;
 	private String city;
 	private String postCode;
-	private String country;
+	@ManyToOne private Country country;
 
 	public Address() {}
 
-	public Address(String street, String streetNumber, String city, String postCode, String country) {
+	public Address(String street, String streetNumber, String city, String postCode, Country country) {
 		this.street = street;
 		this.streetNumber = streetNumber;
 		this.city = city;
@@ -53,11 +53,11 @@ public class Address {
 		this.postCode = postCode;
 	}
 
-	public String getCountry() {
+	public Country getCountry() {
 		return country;
 	}
 
-	public void setCountry(String country) {
+	public void setCountry(Country country) {
 		this.country = country;
 	}
 
@@ -72,7 +72,7 @@ public class Address {
 		if (streetNumber != null ? !streetNumber.equals(address.streetNumber) : address.streetNumber != null) return false;
 		if (city != null ? !city.equals(address.city) : address.city != null) return false;
 		if (postCode != null ? !postCode.equals(address.postCode) : address.postCode != null) return false;
-		if (country != null ? !country.equals(address.country) : address.country != null) return false;
+		if (country != null ? !country.getId().equals(address.country.getId()) : address.country != null) return false;
 		return true;
 	}
 
@@ -81,7 +81,7 @@ public class Address {
 		result = 31 * result + (streetNumber != null ? streetNumber.hashCode() : 0);
 		result = 31 * result + (city != null ? city.hashCode() : 0);
 		result = 31 * result + (postCode != null ? postCode.hashCode() : 0);
-		result = 31 * result + (country != null ? country.hashCode() : 0);
+		result = 31 * result + (country != null ? country.getId().hashCode() : 0);
 		return result;
 	}
 }

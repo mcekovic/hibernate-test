@@ -30,11 +30,15 @@ public class Player {
 	@OrderBy("PHONE_TYPE")
 	private Map<PhoneType, String> phones = new TreeMap<>();
 
-	@OneToMany(mappedBy = "playerTitleId.player", fetch = LAZY, cascade = CascadeType.ALL) @Cache(usage = READ_WRITE)
+	@OneToMany(mappedBy = "playerTitleId.player", cascade = CascadeType.ALL) @Cache(usage = READ_WRITE)
 	@OrderBy("titleCount desc")
 	private List<PlayerTitle> titles = new ArrayList<>();
 
 	public Player() {}
+
+	public Player(long id) {
+		this.id = id;
+	}
 
 	public Player(String name) {
 		this.name = name;
