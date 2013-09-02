@@ -40,24 +40,4 @@ public class OrderItem {
 	public void setCount(int count) {
 		this.count = count;
 	}
-
-
-	// ObjectUtil
-
-	@Override public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		OrderItem orderItem = (OrderItem)o;
-		if (id != null ? !id.equals(orderItem.id) : orderItem.id != null) return false;
-		if (name != null ? !name.equals(orderItem.name) : orderItem.name != null) return false;
-		if (count != orderItem.count) return false;
-		return true;
-	}
-
-	@Override public int hashCode() {
-		int result = id != null ? id.hashCode() : 0;
-		result = 31 * result + (name != null ? name.hashCode() : 0);
-		result = 31 * result + count;
-		return result;
-	}
 }

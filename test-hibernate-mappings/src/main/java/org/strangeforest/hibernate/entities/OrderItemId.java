@@ -38,9 +38,9 @@ public class OrderItemId implements Serializable {
 	@Override public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
-		OrderItemId that = (OrderItemId)o;
-		if (index != that.index) return false;
-		if (order != null ? order.getId() != that.order.getId() : that.order != null) return false;
+		OrderItemId id = (OrderItemId)o;
+		if (index != id.index) return false;
+		if (order != null ? order.equals(id.order) : id.order != null) return false;
 		return true;
 	}
 
