@@ -3,14 +3,10 @@ package org.strangeforest.hibernate.entities;
 import java.io.*;
 import javax.persistence.*;
 
-import org.hibernate.annotations.Cache;
-
-import static org.hibernate.annotations.CacheConcurrencyStrategy.*;
-
 @Embeddable
 public class OrderItemId implements Serializable {
 
-	@ManyToOne @Cache(usage = READ_WRITE) private Order order;
+	@ManyToOne private Order order;
 	private int index;
 
 	public OrderItemId() {}
