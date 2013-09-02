@@ -57,4 +57,22 @@ public class PlayerTitle {
 	public void setTitleCount(int titleCount) {
 		this.titleCount = titleCount;
 	}
+
+
+	// Object methods
+
+	@Override public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		PlayerTitle playerTitle = (PlayerTitle)o;
+		if (playerId != playerTitle.playerId) return false;
+		if (tournamentId != playerTitle.tournamentId) return false;
+		return true;
+	}
+
+	@Override public int hashCode() {
+		int result = (int)(playerId ^ (playerId >>> 32));
+		result = 31 * result + (int)(tournamentId ^ (tournamentId >>> 32));
+		return result;
+	}
 }

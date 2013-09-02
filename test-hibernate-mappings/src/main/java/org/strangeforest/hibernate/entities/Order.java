@@ -75,10 +75,15 @@ public class Order {
 		if (o == null || getClass() != o.getClass()) return false;
 		Order order = (Order)o;
 		if (id != order.id) return false;
+		if (created != null ? !created.equals(order.created) : order.created != null) return false;
+		if (description != null ? !description.equals(order.description) : order.description != null) return false;
 		return true;
 	}
 
 	@Override public int hashCode() {
-		return (int)(id ^ (id >>> 32));
+		int result = (int)(id ^ (id >>> 32));
+		result = 31 * result + (created != null ? created.hashCode() : 0);
+		result = 31 * result + (description != null ? description.hashCode() : 0);
+		return result;
 	}
 }
