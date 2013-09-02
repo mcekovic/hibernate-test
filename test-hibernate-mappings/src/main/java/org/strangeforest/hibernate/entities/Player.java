@@ -1,7 +1,6 @@
 package org.strangeforest.hibernate.entities;
 
 import java.util.*;
-import javax.persistence.CascadeType;
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.OrderBy;
@@ -9,6 +8,7 @@ import javax.persistence.OrderBy;
 import org.hibernate.annotations.Cache;
 import org.joda.time.*;
 
+import static javax.persistence.CascadeType.*;
 import static javax.persistence.FetchType.*;
 import static javax.persistence.TemporalType.*;
 import static org.hibernate.annotations.CacheConcurrencyStrategy.*;
@@ -30,7 +30,7 @@ public class Player {
 	@OrderBy("PHONE_TYPE")
 	private Map<PhoneType, String> phones = new TreeMap<>();
 
-	@OneToMany(mappedBy = "playerTitleId.player", cascade = CascadeType.ALL) @Cache(usage = READ_WRITE)
+	@OneToMany(mappedBy = "playerTitleId.player", fetch = LAZY, cascade = ALL) @Cache(usage = READ_WRITE)
 	@OrderBy("titleCount desc")
 	private List<PlayerTitle> titles = new ArrayList<>();
 

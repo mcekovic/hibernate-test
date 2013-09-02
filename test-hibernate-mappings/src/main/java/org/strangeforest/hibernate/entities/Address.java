@@ -2,6 +2,8 @@ package org.strangeforest.hibernate.entities;
 
 import javax.persistence.*;
 
+import static javax.persistence.FetchType.*;
+
 @Embeddable
 public class Address {
 
@@ -9,7 +11,7 @@ public class Address {
 	private String streetNumber;
 	private String city;
 	private String postCode;
-	@ManyToOne(fetch = FetchType.LAZY) private Country country;
+	@ManyToOne(fetch = LAZY) private Country country;
 
 	public Address() {}
 

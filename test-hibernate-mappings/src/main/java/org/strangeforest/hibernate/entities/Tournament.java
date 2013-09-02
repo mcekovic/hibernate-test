@@ -2,13 +2,15 @@ package org.strangeforest.hibernate.entities;
 
 import javax.persistence.*;
 
+import static javax.persistence.FetchType.*;
+
 @Entity
 public class Tournament {
 
 	@Id @GeneratedValue private long id;
 	@Column(unique = true) private String name;
 	private TournamentType type;
-	@ManyToOne(fetch = FetchType.LAZY) private Country country;
+	@ManyToOne(fetch = LAZY) private Country country;
 
 	public Tournament() {}
 
