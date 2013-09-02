@@ -1,6 +1,7 @@
 package test.strangeforest.hibernate;
 
 import java.io.*;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.test.context.*;
@@ -30,6 +31,11 @@ public class FixtureIT extends AbstractTestNGSpringContextTests {
 	@AfterSuite
 	public void cleanUpSuite() throws IOException {
 		dataSource.dropConnections();
+		System.out.println("GetCount: " + dataSource.getStatistics().get("GetCount"));
+		long executions = 0;
+		for (Map<String, Object> stStat : (Iterable<Map<String, Object>>)dataSource.getStatistics().get("Statements"))
+			executions += (Long)stStat.get("Executions");
+		System.out.println("Executions: " + executions);
 		new ObjectMapper().writerWithDefaultPrettyPrinter().writeValue(System.out, dataSource.getStatistics());
 	}
 

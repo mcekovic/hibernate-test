@@ -6,30 +6,30 @@ import javax.persistence.*;
 @Embeddable
 public class PlayerTitleId implements Serializable {
 
-	@ManyToOne private Player player;
-	@ManyToOne private Tournament tournament;
+	private long playerId;
+	private long tournamentId;
 
 	public PlayerTitleId() {}
 
-	public PlayerTitleId(Player player, Tournament tournament) {
-		this.player = player;
-		this.tournament = tournament;
+	public PlayerTitleId(long playerId, long tournamentId) {
+		this.playerId = playerId;
+		this.tournamentId = tournamentId;
 	}
 
-	public Player getPlayer() {
-		return player;
+	public long getPlayerId() {
+		return playerId;
 	}
 
-	public void setPlayer(Player player) {
-		this.player = player;
+	public void setPlayerId(long playerId) {
+		this.playerId = playerId;
 	}
 
-	public Tournament getTournament() {
-		return tournament;
+	public long getTournamentId() {
+		return tournamentId;
 	}
 
-	public void setTournament(Tournament tournament) {
-		this.tournament = tournament;
+	public void setTournamentId(long tournamentId) {
+		this.tournamentId = tournamentId;
 	}
 
 
@@ -39,21 +39,21 @@ public class PlayerTitleId implements Serializable {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		PlayerTitleId id = (PlayerTitleId)o;
-		if (player != null ? player.getId() != id.player.getId() : id.player != null) return false;
-		if (tournament != null ? tournament.getId() != id.tournament.getId() : id.tournament != null) return false;
+		if (playerId != id.playerId) return false;
+		if (tournamentId != id.tournamentId) return false;
 		return true;
 	}
 
 	@Override public int hashCode() {
-		int result = player != null ? player.hashCode() : 0;
-		result = 31 * result + (tournament != null ? tournament.hashCode() : 0);
+		int result = (int)(playerId ^ (playerId >>> 32));
+		result = 31 * result + (int)(tournamentId ^ (tournamentId >>> 32));
 		return result;
 	}
 
 	@Override public String toString() {
 		return "PlayerTitleId{" +
-				"player=" + player.getId() +
-				", tournament=" + tournament.getId() +
+				"player=" + playerId +
+				", tournament=" + tournamentId +
 				'}';
 	}
 }

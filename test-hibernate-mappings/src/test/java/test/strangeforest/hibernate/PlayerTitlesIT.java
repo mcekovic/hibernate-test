@@ -42,6 +42,7 @@ public class PlayerTitlesIT extends AbstractTestNGSpringContextTests {
 		players.save(player);
 
 		assertThat(getPlayerWithTitles().getTitleCount(), is(equalTo(6)));
+		assertThat(getPlayerWithTitles().getTitleCount(), is(equalTo(6)));
 	}
 
 

@@ -26,11 +26,11 @@ public class Player {
 	private List<Address> addresses = new ArrayList<>();
 
 	@ElementCollection(fetch = EAGER) @Cache(usage = READ_WRITE)
-	@MapKeyEnumerated @MapKeyColumn(name="PHONE_TYPE")	@Column(name="PHONE")
-	@OrderBy("PHONE_TYPE")
+	@MapKeyEnumerated @MapKeyColumn(name="phone_type")	@Column(name="phone")
+	@OrderBy("phone_type")
 	private Map<PhoneType, String> phones = new TreeMap<>();
 
-	@OneToMany(mappedBy = "playerTitleId.player", fetch = LAZY, cascade = ALL) @Cache(usage = READ_WRITE)
+	@OneToMany(mappedBy = "player", fetch = LAZY, cascade = ALL) @Cache(usage = READ_WRITE)
 	@OrderBy("titleCount desc")
 	private List<PlayerTitle> titles = new ArrayList<>();
 
