@@ -5,8 +5,8 @@ import javax.persistence.*;
 @Entity
 public class PlayerTitle {
 
-	@EmbeddedId PlayerTitleId playerTitleId;
-	int titleCount;
+	@EmbeddedId private PlayerTitleId playerTitleId;
+	private int titleCount;
 
 	public PlayerTitle() {}
 
