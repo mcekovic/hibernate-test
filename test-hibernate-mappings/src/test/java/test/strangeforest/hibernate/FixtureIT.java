@@ -22,7 +22,7 @@ public class FixtureIT extends AbstractTestNGSpringContextTests {
 	@Autowired private TournamentRepository tournaments;
 	@Autowired private ConnectionPoolDataSource dataSource;
 
-	@BeforeSuite
+	@BeforeSuite(groups = "SetUp")
 	public void setUpSuite() {
 		System.out.println("Deleting DB files...");
 		ITUtil.deleteFiles(System.getProperty("user.home") + "/.hibernate-test/h2", ".*");
@@ -39,7 +39,7 @@ public class FixtureIT extends AbstractTestNGSpringContextTests {
 		new ObjectMapper().writerWithDefaultPrettyPrinter().writeValue(System.out, dataSource.getStatistics());
 	}
 
-	@BeforeClass
+	@Test(groups = "SetUp") @BeforeClass
 	public void setUp() {
 		dataSource.resetStatistics();
 	}
