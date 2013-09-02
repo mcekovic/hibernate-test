@@ -32,6 +32,24 @@ public class PlayerTitleId implements Serializable {
 		this.tournament = tournament;
 	}
 
+
+	// Object Methods
+
+	@Override public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		PlayerTitleId id = (PlayerTitleId)o;
+		if (player != null ? player.getId() != id.player.getId() : id.player != null) return false;
+		if (tournament != null ? tournament.getId() != id.tournament.getId() : id.tournament != null) return false;
+		return true;
+	}
+
+	@Override public int hashCode() {
+		int result = player != null ? player.hashCode() : 0;
+		result = 31 * result + (tournament != null ? tournament.hashCode() : 0);
+		return result;
+	}
+
 	@Override public String toString() {
 		return "PlayerTitleId{" +
 				"player=" + player.getId() +

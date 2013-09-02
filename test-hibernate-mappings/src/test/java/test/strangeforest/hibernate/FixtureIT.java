@@ -28,9 +28,14 @@ public class FixtureIT extends AbstractTestNGSpringContextTests {
 	}
 
 	@AfterSuite
-	public void cleanUp() throws IOException {
+	public void cleanUpSuite() throws IOException {
 		dataSource.dropConnections();
 		new ObjectMapper().writerWithDefaultPrettyPrinter().writeValue(System.out, dataSource.getStatistics());
+	}
+
+	@BeforeClass
+	public void setUp() {
+		dataSource.resetStatistics();
 	}
 
 	@Test(groups = "CountryFixture")

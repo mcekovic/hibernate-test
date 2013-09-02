@@ -9,7 +9,7 @@ public class Address {
 	private String streetNumber;
 	private String city;
 	private String postCode;
-	@ManyToOne private Country country;
+	@ManyToOne(fetch = FetchType.LAZY) private Country country;
 
 	public Address() {}
 

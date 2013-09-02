@@ -8,7 +8,7 @@ public class Tournament {
 	@Id @GeneratedValue private long id;
 	@Column(unique = true) private String name;
 	private TournamentType type;
-	@ManyToOne private Country country;
+	@ManyToOne(fetch = FetchType.LAZY) private Country country;
 
 	public Tournament() {}
 
