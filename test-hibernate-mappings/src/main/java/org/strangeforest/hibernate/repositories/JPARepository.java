@@ -34,11 +34,6 @@ public abstract class JPARepository<E> {
 	}
 
 	@Transactional
-	public void delete(E entity) {
-		em.remove(entity);
-	}
-
-	@Transactional
 	public void deleteById(Object id) {
 		E entity = em.find(entityClass, id);
 		if (entity != null)
