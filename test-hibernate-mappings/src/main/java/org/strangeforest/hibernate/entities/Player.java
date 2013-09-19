@@ -8,6 +8,8 @@ import javax.persistence.OrderBy;
 import org.hibernate.annotations.Cache;
 import org.joda.time.*;
 
+import com.finsoft.util.*;
+
 import static javax.persistence.CascadeType.*;
 import static javax.persistence.FetchType.*;
 import static javax.persistence.TemporalType.*;
@@ -108,8 +110,20 @@ public class Player {
 		this.titles = titles;
 	}
 
+	public PlayerTitle findTitle(final Tournament tournament) {
+		return Algorithms.find(getTitles(), new Predicate<PlayerTitle>() {
+			@Override public boolean evaluate(PlayerTitle title) {
+				return title.getTournamentId() == tournament.getId();
+			}
+		});
+	}
+
 	public void addTitle(Tournament tournament, int count) {
 		getTitles().add(new PlayerTitle(this, tournament, count));
+	}
+
+	public void addTitle(long tournamentId, int count) {
+		getTitles().add(new PlayerTitle(this, tournamentId, count));
 	}
 
 	public int getTitleCount() {
@@ -117,5 +131,11 @@ public class Player {
 		for (PlayerTitle title : getTitles())
 			count += title.getTitleCount();
 		return count;
+	}
+
+	@PostPersist
+	private void postPersist() {
+		for (PlayerTitle title : titles)
+			title.setPlayerId(id);
 	}
 }

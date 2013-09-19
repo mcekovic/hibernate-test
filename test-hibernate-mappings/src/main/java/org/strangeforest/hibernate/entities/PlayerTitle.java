@@ -10,19 +10,23 @@ public class PlayerTitle {
 	@Id @Column(name = "player_id") private long playerId;
 	@Id @Column(name = "tournament_id") private long tournamentId;
 
-	@ManyToOne @JoinColumn(insertable = false, updatable = false)
+	@ManyToOne @MapsId("playerId")
 	private Player player;
-	@ManyToOne(fetch = LAZY) @JoinColumn(insertable = false, updatable = false)
+	@ManyToOne(fetch = LAZY) @MapsId("tournamentId")
 	private Tournament tournament;
 	private int titleCount;
 
 	public PlayerTitle() {}
 
 	public PlayerTitle(Player player, Tournament tournament, int titleCount) {
-		this.playerId = player.getId();
-		this.tournamentId = tournament.getId();
-		this.player = player;
+		this(player, tournament.getId(), titleCount);
 		this.tournament = tournament;
+	}
+
+	public PlayerTitle(Player player, long tournamentId, int titleCount) {
+		this.playerId = player.getId();
+		this.tournamentId = tournamentId;
+		this.player = player;
 		this.titleCount = titleCount;
 	}
 
