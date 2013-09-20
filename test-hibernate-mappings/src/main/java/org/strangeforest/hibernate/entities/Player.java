@@ -4,6 +4,8 @@ import java.util.*;
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.OrderBy;
+import javax.validation.*;
+import javax.validation.constraints.*;
 
 import org.hibernate.annotations.Cache;
 import org.joda.time.*;
@@ -22,6 +24,7 @@ public class Player {
 	@Column(unique = true) private String name;
 	@Temporal(DATE) private Date dateOfBirth;
 	@Embedded private Address residence;
+	@Embedded @Valid private EMaillAddress eMail;
 
 	@ElementCollection(fetch = EAGER) @Cache(usage = READ_WRITE)
 	@OrderBy("country,city,postCode,street,streetNumber")
@@ -76,6 +79,14 @@ public class Player {
 
 	public void setResidence(Address residence) {
 		this.residence = residence;
+	}
+
+	public String getEMail() {
+		return eMail != null ? eMail.get() : null;
+	}
+
+	public void setEMail(String eMail) {
+		this.eMail = eMail != null ? new EMaillAddress(eMail) : null;
 	}
 
 	public List<Address> getAddresses() {

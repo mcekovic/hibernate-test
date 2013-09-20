@@ -3,6 +3,7 @@ package test.strangeforest.hibernate;
 import java.util.*;
 
 import javax.persistence.*;
+import javax.validation.*;
 
 import org.joda.time.*;
 import org.springframework.beans.factory.annotation.*;
@@ -11,6 +12,8 @@ import org.springframework.test.context.testng.*;
 import org.strangeforest.hibernate.entities.*;
 import org.strangeforest.hibernate.repositories.*;
 import org.testng.annotations.*;
+
+import com.finsoft.util.*;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
@@ -47,12 +50,26 @@ public class PlayerIT extends AbstractTestNGSpringContextTests {
 	public void playerResidenceIsUpdated() {
 		Player player = getPlayer();
 		player.setResidence(new Address("Drordza Levijea", "12a", "Monte Karlo", "12345", countries.findById("mn")));
+		player.setEMail("nole@djoker.net");
 		players.save(player);
 
 		assertThat(getPlayer().getResidence().getCity(), is(equalTo("Monte Karlo")));
 	}
 
 	@Test(dependsOnMethods = "playerResidenceIsUpdated", dependsOnGroups = "CountryFixture")
+	public void playerEMailIsInvalid() {
+		Player player = getPlayer();
+		player.setEMail("nole@djoker!net");
+		try {
+			players.save(player);
+			fail("E-Mail should be invalid.");
+		}
+		catch (Exception ex) {
+			assertThat(ExceptionUtil.getRootCause(ex), instanceOf(ConstraintViolationException.class));
+		}
+	}
+
+	@Test(dependsOnMethods = "playerEMailIsInvalid", dependsOnGroups = "CountryFixture")
 	public void playerAddressIsAdded() {
 		Player player = getPlayer();
 		player.addAddress(new Address("Pere Perica", "21b", "Zagubica", "12345", countries.findById("sr")));
