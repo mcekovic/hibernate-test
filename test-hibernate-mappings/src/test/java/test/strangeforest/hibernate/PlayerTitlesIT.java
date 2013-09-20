@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.test.context.*;
 import org.springframework.test.context.testng.*;
 import org.springframework.transaction.*;
-import org.springframework.transaction.annotation.*;
 import org.springframework.transaction.support.*;
 import org.strangeforest.hibernate.entities.*;
 import org.strangeforest.hibernate.repositories.*;
@@ -23,13 +22,8 @@ public class PlayerTitlesIT extends AbstractTestNGSpringContextTests {
 
 	private static final String PLAYER_NAME = "Novak Djokovic 2";
 
-	@BeforeClass
-	public void setUp() {
-		createPlayer();
-	}
-
-	@Transactional
-	public void createPlayer() {
+	@Test(dependsOnGroups = {"TournamentFixture", "CountryFixture"})
+	public void createPlayerWithTitles() {
 		transactionTemplate.execute(new TransactionCallback<Player>() {
 			@Override public Player doInTransaction(TransactionStatus status) {
 				Player player = new Player(PLAYER_NAME);
@@ -42,7 +36,7 @@ public class PlayerTitlesIT extends AbstractTestNGSpringContextTests {
 		});
 	}
 
-	@Test(dependsOnGroups = {"TournamentFixture", "CountryFixture"})
+	@Test(dependsOnMethods = "createPlayerWithTitles", dependsOnGroups = {"TournamentFixture", "CountryFixture"})
 	public void playerTitlesAreAdded() {
 		Tournament australianOpen = tournaments.findByName("Australian Open");
 		Tournament wimbledon = tournaments.findByName("Wimbledon");
