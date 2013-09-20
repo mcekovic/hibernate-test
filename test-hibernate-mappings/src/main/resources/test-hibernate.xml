@@ -31,6 +31,7 @@
 		<property name="maxPoolSize" value="5"/>
 		<property name="minIdleCount" value="1"/>
 		<property name="maxPendingCount" value="5"/>
+		<property name="initQuery" value="CREATE SCHEMA IF NOT EXISTS Test; SET SCHEMA Test"/>
 		<property name="checkQuery" value="SELECT 1"/>
 		<property name="checkTime" value="60"/>
 		<property name="maxWaitTime" value="0"/>
