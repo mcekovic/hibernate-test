@@ -8,6 +8,7 @@ import javax.persistence.OrderBy;
 import javax.validation.*;
 
 import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.*;
 import org.joda.time.*;
 
 import com.finsoft.util.*;
@@ -17,7 +18,7 @@ import static javax.persistence.FetchType.*;
 import static javax.persistence.TemporalType.*;
 import static org.hibernate.annotations.CacheConcurrencyStrategy.*;
 
-@Entity
+@Entity @DynamicUpdate(true)
 public class Player {
 
 	@Id @GeneratedValue private long id;
@@ -41,6 +42,9 @@ public class Player {
 	@ElementCollection(fetch = LAZY) @OrderBy("sponsor.id")
 	@Cache(usage = READ_WRITE)
 	private List<PlayerSponsorship> sponsorships = new ArrayList<>();
+
+	@OneToOne(fetch = LAZY)
+	private Tournament favouriteTournament;
 
 	public Player() {}
 
@@ -141,6 +145,14 @@ public class Player {
 
 	public void addSponsorship(Sponsor sponsor, int years, BigDecimal amount) {
 		getSponsorships().add(new PlayerSponsorship(sponsor, years, amount));
+	}
+
+	public Tournament getFavouriteTournament() {
+		return favouriteTournament;
+	}
+
+	public void setFavouriteTournament(Tournament favouriteTournament) {
+		this.favouriteTournament = favouriteTournament;
 	}
 
 	@PostPersist

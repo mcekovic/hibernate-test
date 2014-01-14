@@ -23,6 +23,7 @@ public class PlayerIT extends AbstractTestNGSpringContextTests {
 
 	@Autowired private PlayerRepository players;
 	@Autowired private CountryRepository countries;
+	@Autowired private TournamentRepository tournaments;
 	private long playerId;
 
 	private static final String PLAYER_NAME = "Novak Djokovic";
@@ -96,21 +97,27 @@ public class PlayerIT extends AbstractTestNGSpringContextTests {
 	}
 
 	@Test(dependsOnMethods = "playerPhonesAreAdded")
-	public void playerPhonesAreUpdated() {
+	public void playerPhoneIsUpdated() {
 		String phoneNumber1 = "+381 64 2134-031";
-		String phoneNumber2 = "+654 12 3465-431";
 		Player player = getPlayer();
 		player.addPhone(PhoneType.MOBILE, phoneNumber1);
-		player.addPhone(PhoneType.HOME, phoneNumber2);
 		players.save(player);
 
 		Map<PhoneType, String> phones = getPlayer().getPhones();
 		assertThat(phones.entrySet(), hasSize(2));
 		assertThat(phones.get(PhoneType.MOBILE), is(equalTo(phoneNumber1)));
-		assertThat(phones.get(PhoneType.HOME), is(equalTo(phoneNumber2)));
 	}
 
-	@Test(dependsOnMethods = "playerPhonesAreUpdated")
+	@Test(dependsOnMethods = "playerPhoneIsUpdated", dependsOnGroups = "TournamentFixture")
+	public void playerFavouriteTournamentIsSet() {
+		Player player = getPlayer();
+		player.setFavouriteTournament(tournaments.findByName("Australian Open"));
+		players.save(player);
+
+		assertThat(player.getFavouriteTournament().getName(), is(equalTo("Australian Open")));
+	}
+
+	@Test(dependsOnMethods = "playerFavouriteTournamentIsSet")
 	public void playerIsFoundByName() {
 		Player player = players.findByName(PLAYER_NAME);
 		Player player2 = players.findByName(PLAYER_NAME);

@@ -33,6 +33,33 @@
 					<target>1.7</target>
 				</configuration>
 			</plugin>
+			<!--<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.7</version>
+				<executions>
+					<execution>
+						<phase>process-classes</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<tasks>
+						<taskdef name="instrument" classname="org.hibernate.tool.instrument.javassist.InstrumentTask">
+							<classpath>
+								<path refid="maven.runtime.classpath" />
+								<path refid="maven.plugin.classpath" />
+							</classpath>
+						</taskdef>
+						<instrument verbose="false">
+							<fileset dir="${project.build.outputDirectory}">
+								<include name="**/entities/**/*.class" />
+							</fileset>
+						</instrument>
+					</tasks>
+				</configuration>
+			</plugin>-->
 		</plugins>
 	</build>
 
