@@ -4,14 +4,14 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 @Embeddable
-public class EMaillAddress {
+public class EMailAddress {
 
 	@Pattern(regexp = "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}")
 	private String eMailAddress;
 
-	public EMaillAddress() {}
+	public EMailAddress() {}
 
-	public EMaillAddress(String eMailAddress) {
+	public EMailAddress(String eMailAddress) {
 		this.eMailAddress = eMailAddress;
 	}
 

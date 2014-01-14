@@ -5,7 +5,6 @@ import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.OrderBy;
 import javax.validation.*;
-import javax.validation.constraints.*;
 
 import org.hibernate.annotations.Cache;
 import org.joda.time.*;
@@ -24,14 +23,14 @@ public class Player {
 	@Column(unique = true) private String name;
 	@Temporal(DATE) private Date dateOfBirth;
 	@Embedded private Address residence;
-	@Embedded @Valid private EMaillAddress eMail;
+	@Embedded @Valid private EMailAddress eMail;
 
 	@ElementCollection(fetch = EAGER) @Cache(usage = READ_WRITE)
 	@OrderBy("country,city,postCode,street,streetNumber")
 	private List<Address> addresses = new ArrayList<>();
 
 	@ElementCollection(fetch = EAGER) @Cache(usage = READ_WRITE)
-	@MapKeyEnumerated @MapKeyColumn(name="phone_type")	@Column(name="phone")
+	@MapKeyEnumerated(EnumType.STRING) @MapKeyColumn(name="phone_type")	@Column(name="phone")
 	@OrderBy("phone_type")
 	private Map<PhoneType, String> phones = new TreeMap<>();
 
@@ -86,7 +85,7 @@ public class Player {
 	}
 
 	public void setEMail(String eMail) {
-		this.eMail = eMail != null ? new EMaillAddress(eMail) : null;
+		this.eMail = eMail != null ? new EMailAddress(eMail) : null;
 	}
 
 	public List<Address> getAddresses() {
