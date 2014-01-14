@@ -22,7 +22,7 @@ public class PlayerTitlesIT extends AbstractTestNGSpringContextTests {
 
 	private static final String PLAYER_NAME = "Novak Djokovic 2";
 
-	@Test(dependsOnGroups = {"TournamentFixture", "CountryFixture"})
+	@Test(dependsOnGroups = "TournamentFixture")
 	public void createPlayerWithTitles() {
 		transactionTemplate.execute(new TransactionCallback<Player>() {
 			@Override public Player doInTransaction(TransactionStatus status) {
@@ -36,7 +36,7 @@ public class PlayerTitlesIT extends AbstractTestNGSpringContextTests {
 		});
 	}
 
-	@Test(dependsOnMethods = "createPlayerWithTitles", dependsOnGroups = {"TournamentFixture", "CountryFixture"})
+	@Test(dependsOnMethods = "createPlayerWithTitles", dependsOnGroups = "TournamentFixture")
 	public void playerTitlesAreAdded() {
 		Tournament australianOpen = tournaments.findByName("Australian Open");
 		Tournament wimbledon = tournaments.findByName("Wimbledon");

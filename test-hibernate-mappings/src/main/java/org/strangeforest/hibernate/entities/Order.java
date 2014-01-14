@@ -20,40 +20,31 @@ public class Order {
 	@Temporal(TIMESTAMP) private Date created;
 	private String description;
 
-	@OneToMany(mappedBy = "id.order", fetch = EAGER, cascade = ALL) @Cache(usage = READ_WRITE)
-	@OrderBy("id.index")
+	@OneToMany(mappedBy = "id.order", fetch = EAGER, cascade = ALL) @OrderBy("id.index")
+	@Cache(usage = READ_WRITE)
 	private List<OrderItem> items = new ArrayList<>();
+
+	public Order() {}
+
+	public Order(String description) {
+		this.description = description;
+		created = new Date();
+	}
 
 	public long getId() {
 		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
 	}
 
 	public Date getCreated() {
 		return created;
 	}
 
-	public void setCreated(Date created) {
-		this.created = created;
-	}
-
 	public String getDescription() {
 		return description;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
 	public List<OrderItem> getItems() {
 		return items;
-	}
-
-	public void setItems(List<OrderItem> items) {
-		this.items = items;
 	}
 
 	public void addItem(int index, String name, int count) {

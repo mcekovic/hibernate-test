@@ -20,9 +20,7 @@ public class OrderIT extends AbstractTestNGSpringContextTests {
 
 	@Test(dependsOnGroups = "SetUp")
 	public void createOrder() {
-		Order order = new Order();
-		order.setDescription("Nabavka");
-		order.setCreated(new Date());
+		Order order = new Order("Nabavka");
 		orders.create(order);
 		orderId = order.getId();
 		assertThat(getOrder().getDescription(), is(equalTo("Nabavka")));

@@ -10,10 +10,8 @@ public class PlayerTitle {
 	@Id @Column(name = "player_id") private long playerId;
 	@Id @Column(name = "tournament_id") private long tournamentId;
 
-	@ManyToOne @MapsId("playerId")
-	private Player player;
-	@ManyToOne(fetch = LAZY) @MapsId("tournamentId")
-	private Tournament tournament;
+	@ManyToOne @MapsId("playerId") private Player player;
+	@ManyToOne(fetch = LAZY) @MapsId("tournamentId") private Tournament tournament;
 	private int titleCount;
 
 	public PlayerTitle() {}
@@ -40,10 +38,6 @@ public class PlayerTitle {
 
 	public long getTournamentId() {
 		return tournamentId;
-	}
-
-	public void setTournamentId(long tournamentId) {
-		this.tournamentId = tournamentId;
 	}
 
 	public Player getPlayer() {

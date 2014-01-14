@@ -1,5 +1,6 @@
 package org.strangeforest.hibernate.entities;
 
+import java.math.*;
 import java.util.*;
 import javax.persistence.*;
 import javax.persistence.Entity;
@@ -25,18 +26,21 @@ public class Player {
 	@Embedded private Address residence;
 	@Embedded @Valid private EMailAddress eMail;
 
-	@ElementCollection(fetch = EAGER) @Cache(usage = READ_WRITE)
-	@OrderBy("country,city,postCode,street,streetNumber")
+	@ElementCollection(fetch = EAGER) @OrderBy("country,city,postCode,street,streetNumber")
+	@Cache(usage = READ_WRITE)
 	private List<Address> addresses = new ArrayList<>();
 
-	@ElementCollection(fetch = EAGER) @Cache(usage = READ_WRITE)
-	@MapKeyEnumerated(EnumType.STRING) @MapKeyColumn(name="phone_type")	@Column(name="phone")
-	@OrderBy("phone_type")
-	private Map<PhoneType, String> phones = new TreeMap<>();
+	@ElementCollection(fetch = EAGER) @OrderBy("phone_type")
+	@MapKeyEnumerated(EnumType.STRING) @MapKeyColumn(name="phone_type") @Column(name="phone") @Cache(usage = READ_WRITE)
+	private Map<PhoneType, String> phones = new HashMap<>();
 
-	@OneToMany(mappedBy = "player", fetch = LAZY, cascade = ALL) @Cache(usage = READ_WRITE)
-	@OrderBy("titleCount desc")
+	@OneToMany(mappedBy = "player", fetch = LAZY, cascade = ALL) @OrderBy("titleCount desc")
+	@Cache(usage = READ_WRITE)
 	private List<PlayerTitle> titles = new ArrayList<>();
+
+	@ElementCollection(fetch = LAZY) @OrderBy("sponsor.id")
+	@Cache(usage = READ_WRITE)
+	private List<PlayerSponsorship> sponsorships = new ArrayList<>();
 
 	public Player() {}
 
@@ -52,16 +56,8 @@ public class Player {
 		return id;
 	}
 
-	public void setId(long id) {
-		this.id = id;
-	}
-
 	public String getName() {
 		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public LocalDate getDateOfBirth() {
@@ -92,10 +88,6 @@ public class Player {
 		return addresses;
 	}
 
-	public void setAddresses(List<Address> address) {
-		this.addresses = address;
-	}
-
 	public void addAddress(Address address) {
 		getAddresses().add(address);
 	}
@@ -104,20 +96,12 @@ public class Player {
 		return phones;
 	}
 
-	public void setPhones(Map<PhoneType, String> phones) {
-		this.phones = phones;
-	}
-
 	public void addPhone(PhoneType type, String phone) {
 		getPhones().put(type, phone);
 	}
 
 	public List<PlayerTitle> getTitles() {
 		return titles;
-	}
-
-	public void setTitles(List<PlayerTitle> titles) {
-		this.titles = titles;
 	}
 
 	public PlayerTitle findTitle(final Tournament tournament) {
@@ -141,6 +125,22 @@ public class Player {
 		for (PlayerTitle title : getTitles())
 			count += title.getTitleCount();
 		return count;
+	}
+
+	public List<PlayerSponsorship> getSponsorships() {
+		return sponsorships;
+	}
+
+	public PlayerSponsorship findSponsorship(final Sponsor sponsor) {
+		return Algorithms.find(getSponsorships(), new Predicate<PlayerSponsorship>() {
+			@Override public boolean evaluate(PlayerSponsorship sponsorship) {
+				return sponsorship.getSponsor().getId().equals(sponsor.getId());
+			}
+		});
+	}
+
+	public void addSponsorship(Sponsor sponsor, int years, BigDecimal amount) {
+		getSponsorships().add(new PlayerSponsorship(sponsor, years, amount));
 	}
 
 	@PostPersist

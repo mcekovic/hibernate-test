@@ -20,16 +20,8 @@ public class PlayerTitleId implements Serializable {
 		return playerId;
 	}
 
-	public void setPlayerId(long playerId) {
-		this.playerId = playerId;
-	}
-
 	public long getTournamentId() {
 		return tournamentId;
-	}
-
-	public void setTournamentId(long tournamentId) {
-		this.tournamentId = tournamentId;
 	}
 
 

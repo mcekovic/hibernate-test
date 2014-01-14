@@ -3,14 +3,14 @@ package org.strangeforest.hibernate.entities;
 import javax.persistence.*;
 
 @Entity
-public class Country {
+public class Sponsor {
 
 	@Id private String id;
 	private String name;
 
-	public Country() {}
+	public Sponsor() {}
 
-	public Country(String id, String name) {
+	public Sponsor(String id, String name) {
 		this.id = id;
 		this.name = name;
 	}

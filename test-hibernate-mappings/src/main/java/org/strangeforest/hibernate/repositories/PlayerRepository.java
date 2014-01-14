@@ -20,6 +20,14 @@ public class PlayerRepository extends JPARepository<Player> {
 		return player;
 	}
 
+
+	@Transactional(readOnly = true)
+	public Player findByIdWithSponsorships(long id) {
+		Player player = findById(id);
+		player.getSponsorships().size();
+		return player;
+	}
+
 	@Transactional(readOnly = true)
 	public Player findByName(String name) {
 		TypedQuery<Player> query = em.createQuery("from Player p where p.name = :name", Player.class);
