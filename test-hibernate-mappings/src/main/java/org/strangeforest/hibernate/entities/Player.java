@@ -10,8 +10,7 @@ import javax.validation.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.*;
 import org.joda.time.*;
-
-import com.finsoft.util.*;
+import org.strangeforest.util.*;
 
 import static javax.persistence.CascadeType.*;
 import static javax.persistence.FetchType.*;
@@ -110,7 +109,7 @@ public class Player {
 
 	public PlayerTitle findTitle(final Tournament tournament) {
 		return Algorithms.find(getTitles(), new Predicate<PlayerTitle>() {
-			@Override public boolean evaluate(PlayerTitle title) {
+			@Override public boolean test(PlayerTitle title) {
 				return title.getTournamentId() == tournament.getId();
 			}
 		});
@@ -137,7 +136,7 @@ public class Player {
 
 	public PlayerSponsorship findSponsorship(final Sponsor sponsor) {
 		return Algorithms.find(getSponsorships(), new Predicate<PlayerSponsorship>() {
-			@Override public boolean evaluate(PlayerSponsorship sponsorship) {
+			@Override public boolean test(PlayerSponsorship sponsorship) {
 				return sponsorship.getSponsor().getId().equals(sponsor.getId());
 			}
 		});

@@ -21,7 +21,7 @@
 		</constructor-arg>
 	</bean>
 
-	<bean id="dataSource" class="com.finsoft.db.ConnectionPoolDataSource" init-method="init" destroy-method="close">
+	<bean id="dataSource" class="org.strangeforest.db.ConnectionPoolDataSource" init-method="init" destroy-method="close">
 		<constructor-arg index="0" name="driverClass" value="org.h2.Driver"/>
 		<constructor-arg index="1" name="dbURL" value="jdbc:h2:~/.hibernate-test/h2/test-db"/>
 		<constructor-arg index="2" name="username" value="SA"/>
@@ -41,7 +41,7 @@
 		<property name="propertyCycle" value="60"/>
 		<property name="maxStatements" value="100"/>
 		<property name="logger">
-			<bean class="com.finsoft.db.logging.DBConnectionPoolLogger" c:loggerName="org.strangeforest.hibernate.jdbc"/>
+			<bean class="org.strangeforest.db.logging.DBConnectionPoolLogger" c:loggerName="org.strangeforest.hibernate.jdbc"/>
 		</property>
 		<property name="collectStatementStatistics" value="true"/>
 	</bean>

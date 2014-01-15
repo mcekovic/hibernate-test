@@ -1,7 +1,6 @@
 package test.strangeforest.hibernate;
 
 import java.util.*;
-
 import javax.persistence.*;
 import javax.validation.*;
 
@@ -11,9 +10,8 @@ import org.springframework.test.context.*;
 import org.springframework.test.context.testng.*;
 import org.strangeforest.hibernate.entities.*;
 import org.strangeforest.hibernate.repositories.*;
+import org.strangeforest.util.*;
 import org.testng.annotations.*;
-
-import com.finsoft.util.*;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;

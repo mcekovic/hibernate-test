@@ -6,12 +6,12 @@ import java.util.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.test.context.*;
 import org.springframework.test.context.testng.*;
+import org.strangeforest.db.*;
 import org.strangeforest.hibernate.entities.*;
 import org.strangeforest.hibernate.repositories.*;
 import org.testng.annotations.*;
 
 import com.fasterxml.jackson.databind.*;
-import com.finsoft.db.*;
 
 import static org.strangeforest.hibernate.entities.TournamentType.*;
 
