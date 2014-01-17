@@ -17,25 +17,29 @@ import static org.hibernate.annotations.CacheConcurrencyStrategy.*;
 public class Order {
 
 	@Id @GeneratedValue private long id;
-	@Temporal(TIMESTAMP) private Date created;
+	@Temporal(TIMESTAMP) private Calendar created;
 	private String description;
 
 	@OneToMany(mappedBy = "id.order", fetch = EAGER, cascade = ALL) @OrderBy("id.index")
 	@Cache(usage = READ_WRITE)
-	private List<OrderItem> items = new ArrayList<>();
+	private List<OrderPayment> payments = new ArrayList<>();
+
+	@ElementCollection(fetch = EAGER) @OrderBy("index")
+	@MapKeyColumn(name="index") @Cache(usage = READ_WRITE)
+	private Map<Integer, OrderItem> items = new HashMap<>();
 
 	public Order() {}
 
 	public Order(String description) {
 		this.description = description;
-		created = new Date();
+		created = Calendar.getInstance();
 	}
 
 	public long getId() {
 		return id;
 	}
 
-	public Date getCreated() {
+	public Calendar getCreated() {
 		return created;
 	}
 
@@ -43,19 +47,27 @@ public class Order {
 		return description;
 	}
 
-	public List<OrderItem> getItems() {
+	public Map<Integer, OrderItem> getItems() {
 		return items;
 	}
 
+	public OrderItem getItem(int index) {
+		return getItems().get(index);
+	}
+
 	public void addItem(int index, String name, int count) {
-		getItems().add(new OrderItem(this, index, name, count));
+		getItems().put(index, new OrderItem(name, count));
 	}
 
 	public int getItemCount() {
 		int count = 0;
-		for (OrderItem item : getItems())
+		for (OrderItem item : getItems().values())
 			count += item.getCount();
 		return count;
+	}
+
+	public List<OrderPayment> getPayments() {
+		return payments;
 	}
 
 

@@ -4,14 +4,14 @@ import java.io.*;
 import javax.persistence.*;
 
 @Embeddable
-public class OrderItemId implements Serializable {
+public class OrderPaymentId implements Serializable {
 
 	@ManyToOne private Order order;
 	private int index;
 
-	public OrderItemId() {}
+	public OrderPaymentId() {}
 
-	public OrderItemId(Order order, int index) {
+	public OrderPaymentId(Order order, int index) {
 		this.order = order;
 		this.index = index;
 	}
@@ -30,9 +30,9 @@ public class OrderItemId implements Serializable {
 	@Override public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
-		OrderItemId id = (OrderItemId)o;
-		if (index != id.index) return false;
+		OrderPaymentId id = (OrderPaymentId)o;
 		if (order != null ? order.equals(id.order) : id.order != null) return false;
+		if (index != id.index) return false;
 		return true;
 	}
 
