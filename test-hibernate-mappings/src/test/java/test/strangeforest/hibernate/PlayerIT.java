@@ -48,7 +48,7 @@ public class PlayerIT extends AbstractTestNGSpringContextTests {
 	@Test(dependsOnMethods = "playerDoBIsUpdated", dependsOnGroups = "CountryFixture")
 	public void playerResidenceIsUpdated() {
 		Player player = getPlayer();
-		player.setResidence(new Address("Drordza Levijea", "12a", "Monte Karlo", "12345", countries.findById("mn")));
+		player.setResidence(new Address("Drordza Levijea", "12a", "Monte Karlo", "12345", countries.find("mn")));
 		player.setEMail("nole@djoker.net");
 		players.save(player);
 
@@ -71,7 +71,7 @@ public class PlayerIT extends AbstractTestNGSpringContextTests {
 	@Test(dependsOnMethods = "playerEMailIsInvalid", dependsOnGroups = "CountryFixture")
 	public void playerAddressIsAdded() {
 		Player player = getPlayer();
-		player.addAddress(new Address("Pere Perica", "21b", "Zagubica", "12345", countries.findById("sr")));
+		player.addAddress(new Address("Pere Perica", "21b", "Zagubica", "12345", countries.find("sr")));
 		players.save(player);
 
 		List<Address> addresses = getPlayer().getAddresses();
@@ -125,6 +125,14 @@ public class PlayerIT extends AbstractTestNGSpringContextTests {
 	}
 
 	@Test(dependsOnMethods = "playerIsFoundByName")
+	public void playerIsQueriedByName() {
+		Player player = players.queryOne("select p from Player p left join fetch p.titles where p.name = :name", params("name", PLAYER_NAME));
+		assertThat(player.getPhones().entrySet(), hasSize(2));
+		assertThat(player.getAddresses(), hasSize(1));
+		assertThat(player.getTitles(), is(empty()));
+	}
+
+	@Test(dependsOnMethods = "playerIsQueriedByName")
 	public void playerIdDeleted() {
 		players.deleteById(playerId);
 		try {
@@ -138,6 +146,10 @@ public class PlayerIT extends AbstractTestNGSpringContextTests {
 	// Util
 
 	private Player getPlayer() {
-		return players.findById(playerId);
+		return players.find(playerId);
+	}
+
+	private Map<String, Object> params(String name, Object value) {
+		return Collections.singletonMap(name, value);
 	}
 }

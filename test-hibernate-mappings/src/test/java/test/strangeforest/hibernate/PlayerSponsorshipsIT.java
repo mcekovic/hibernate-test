@@ -29,7 +29,7 @@ public class PlayerSponsorshipsIT extends AbstractTestNGSpringContextTests {
 		transactionTemplate.execute(new TransactionCallback<Player>() {
 			@Override public Player doInTransaction(TransactionStatus status) {
 				Player player = new Player(PLAYER_NAME);
-				Sponsor nike = sponsors.findById("NIKE");
+				Sponsor nike = sponsors.find("NIKE");
 				player.addSponsorship(nike, 5, new BigDecimal(1e7));
 				players.create(player);
 				playerId = player.getId();
@@ -41,7 +41,7 @@ public class PlayerSponsorshipsIT extends AbstractTestNGSpringContextTests {
 	@Test(dependsOnMethods = "createPlayerWithSponsorship")
 	public void playerSponsorshipIsUpdated() {
 		Player player = getPlayer();
-		Sponsor nike = sponsors.findById("NIKE");
+		Sponsor nike = sponsors.find("NIKE");
 		PlayerSponsorship sponsorship = player.findSponsorship(nike);
 		sponsorship.setYears(10);
 		sponsorship.setAmount(new BigDecimal(2e7));

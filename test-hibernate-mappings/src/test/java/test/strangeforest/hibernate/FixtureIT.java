@@ -57,10 +57,10 @@ public class FixtureIT extends AbstractTestNGSpringContextTests {
 
 	@Test(groups = "TournamentFixture", dependsOnGroups = "CountryFixture")
 	public void createTournaments() {
-		tournaments.create(new Tournament("Australian Open", GRAND_SLAM, countries.findById("au")));
-		tournaments.create(new Tournament("Roland Garros", GRAND_SLAM, countries.findById("fr")));
-		tournaments.create(new Tournament("Wimbledon", GRAND_SLAM, countries.findById("uk")));
-		tournaments.create(new Tournament("US Open", GRAND_SLAM, countries.findById("us")));
+		tournaments.create(new Tournament("Australian Open", GRAND_SLAM, countries.find("au")));
+		tournaments.create(new Tournament("Roland Garros", GRAND_SLAM, countries.find("fr")));
+		tournaments.create(new Tournament("Wimbledon", GRAND_SLAM, countries.find("uk")));
+		tournaments.create(new Tournament("US Open", GRAND_SLAM, countries.find("us")));
 	}
 
 	@Test(groups = "SponsorsFixture")

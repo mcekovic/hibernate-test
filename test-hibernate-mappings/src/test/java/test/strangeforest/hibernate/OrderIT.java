@@ -1,7 +1,5 @@
 package test.strangeforest.hibernate;
 
-import java.util.*;
-
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.test.context.*;
 import org.springframework.test.context.testng.*;
@@ -55,6 +53,6 @@ public class OrderIT extends AbstractTestNGSpringContextTests {
 	// Util
 
 	private Order getOrder() {
-		return orders.findById(orderId);
+		return orders.find(orderId);
 	}
 }
