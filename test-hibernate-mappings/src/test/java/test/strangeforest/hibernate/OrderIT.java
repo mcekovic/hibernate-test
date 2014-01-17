@@ -40,6 +40,16 @@ public class OrderIT extends AbstractTestNGSpringContextTests {
 		assertThat(getOrder().getItemCount(), is(equalTo(6)));
 	}
 
+	@Test(dependsOnMethods = "orderItemIsAdded")
+	public void orderItemIsUpdated() {
+		Order order = getOrder();
+		order.getItem(1).setCount(5);
+		order.getItem(2).setCount(4);
+		orders.save(order);
+
+		assertThat(getOrder().getItemCount(), is(equalTo(10)));
+	}
+
 
 
 	// Util
