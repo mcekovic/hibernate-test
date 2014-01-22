@@ -10,6 +10,7 @@ public abstract class JPARepository<E> {
 	protected final Class<E> entityClass;
 	@PersistenceContext protected EntityManager em;
 
+	protected static final String HINT_GRAPH     = "javax.persistence.fetchgraph";
 	protected static final String HINT_CACHEABLE = "org.hibernate.cacheable";
 
 	protected JPARepository(Class<E> entityClass) {
@@ -24,21 +25,31 @@ public abstract class JPARepository<E> {
 		return entity;
 	}
 
-	@Transactional(readOnly = true)
 	public E queryOne(String query, Map<String, Object> params) {
-		TypedQuery<E> typedQuery = em.createQuery(query, entityClass);
-		for (Map.Entry<String, Object> param : params.entrySet())
-			typedQuery.setParameter(param.getKey(), param.getValue());
-		return typedQuery.getSingleResult();
+		return queryOne(query, params, null);
 	}
 
 	@Transactional(readOnly = true)
+	public E queryOne(String query, Map<String, Object> params, String enityGrapth) {
+		return typedQuery(query, params, enityGrapth).getSingleResult();
+	}
+
 	public List<E> query(String query, Map<String, Object> params) {
+		return query(query, params, null);
+	}
+
+	@Transactional(readOnly = true)
+	public List<E> query(String query, Map<String, Object> params, String entityGrapth) {
+		return typedQuery(query, params, entityGrapth).getResultList();
+	}
+
+	private TypedQuery<E> typedQuery(String query, Map<String, Object> params, String entityGrapth) {
 		TypedQuery<E> typedQuery = em.createQuery(query, entityClass);
 		for (Map.Entry<String, Object> param : params.entrySet())
 			typedQuery.setParameter(param.getKey(), param.getValue());
-		typedQuery.setHint(HINT_CACHEABLE, Boolean.TRUE);
-		return typedQuery.getResultList();
+		if (entityGrapth != null)
+			typedQuery.setHint(HINT_GRAPH, em.getEntityGraph(entityGrapth));
+		return typedQuery;
 	}
 
 	@Transactional

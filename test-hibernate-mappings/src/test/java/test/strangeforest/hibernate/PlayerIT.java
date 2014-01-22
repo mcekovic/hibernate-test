@@ -126,7 +126,7 @@ public class PlayerIT extends AbstractTestNGSpringContextTests {
 
 	@Test(dependsOnMethods = "playerIsFoundByName")
 	public void playerIsQueriedByName() {
-		Player player = players.queryOne("select p from Player p left join fetch p.titles where p.name = :name", params("name", PLAYER_NAME));
+		Player player = players.queryOne("select p from Player p where p.name = :name", params("name", PLAYER_NAME), "WithTitles");
 		assertThat(player.getPhones().entrySet(), hasSize(2));
 		assertThat(player.getAddresses(), hasSize(1));
 		assertThat(player.getTitles(), is(empty()));

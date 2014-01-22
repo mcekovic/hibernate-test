@@ -17,7 +17,9 @@ import static javax.persistence.FetchType.*;
 import static javax.persistence.TemporalType.*;
 import static org.hibernate.annotations.CacheConcurrencyStrategy.*;
 
-@Entity @DynamicUpdate(true)
+@Entity
+@NamedEntityGraphs(@NamedEntityGraph(name = "WithTitles", attributeNodes = @NamedAttributeNode("titles")))
+@DynamicUpdate(true)
 public class Player {
 
 	@Id @GeneratedValue private long id;
@@ -31,7 +33,7 @@ public class Player {
 	private List<Address> addresses = new ArrayList<>();
 
 	@ElementCollection(fetch = EAGER) @OrderBy("phone_type")
-	@MapKeyEnumerated(EnumType.STRING) @MapKeyColumn(name="phone_type") @Column(name="phone") @Cache(usage = READ_WRITE)
+	@MapKeyColumn(name="phone_type") @Column(name="phone") @Cache(usage = READ_WRITE)
 	private Map<PhoneType, String> phones = new HashMap<>();
 
 	@OneToMany(mappedBy = "player", fetch = LAZY, cascade = ALL) @OrderBy("titleCount desc")

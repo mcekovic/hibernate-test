@@ -1,9 +1,10 @@
 package org.strangeforest.hibernate.entities;
 
 import java.util.*;
-import javax.persistence.Entity;
 import javax.persistence.*;
+import javax.persistence.Entity;
 import javax.persistence.OrderBy;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 
@@ -20,13 +21,13 @@ public class Order {
 	@Temporal(TIMESTAMP) private Calendar created;
 	private String description;
 
-	@OneToMany(mappedBy = "id.order", fetch = EAGER, cascade = ALL) @OrderBy("id.index")
-	@Cache(usage = READ_WRITE)
-	private List<OrderPayment> payments = new ArrayList<>();
-
 	@ElementCollection(fetch = EAGER) @OrderBy("index")
 	@MapKeyColumn(name="index") @Cache(usage = READ_WRITE)
 	private Map<Integer, OrderItem> items = new HashMap<>();
+
+	@OneToMany(mappedBy = "id.order", fetch = EAGER, cascade = ALL) @OrderBy("id.index")
+	@Cache(usage = READ_WRITE)
+	private List<OrderPayment> payments = new ArrayList<>();
 
 	public Order() {}
 
