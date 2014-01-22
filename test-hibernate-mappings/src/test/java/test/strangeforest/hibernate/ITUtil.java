@@ -4,12 +4,6 @@ import java.io.*;
 
 public abstract class ITUtil {
 
-	public static void deleteFile(String name) {
-		File file = new File(name);
-		file.delete();
-		file.deleteOnExit();
-	}
-
 	public static void deleteFiles(String dir, final String pattern) {
 		File dirFile = new File(dir);
 		if (!dirFile.exists())
@@ -19,8 +13,12 @@ public abstract class ITUtil {
 				return file.getPath().matches(".*" + pattern);
 			}
 		})) {
-			file.delete();
-			file.deleteOnExit();
+			if (file.delete())
+				System.out.println("DB file deleted: " + file.getAbsolutePath());
+			else {
+				file.deleteOnExit();
+				System.out.println("DB file cannot be deleted now, will be deleted on exit: " + file.getAbsolutePath());
+			}
 		}
 	}
 }

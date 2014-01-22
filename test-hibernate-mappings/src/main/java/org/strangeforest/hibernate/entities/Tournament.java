@@ -9,7 +9,7 @@ public class Tournament {
 
 	@Id @GeneratedValue private long id;
 	@Column(unique = true) private String name;
-	@Enumerated(EnumType.STRING) private TournamentType type;
+	private TournamentType type;
 	@ManyToOne(fetch = LAZY) private Country country;
 
 	public Tournament() {}
