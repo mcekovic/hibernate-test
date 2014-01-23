@@ -2,7 +2,9 @@ package org.strangeforest.hibernate.entities;
 
 import javax.persistence.*;
 
-public enum PhoneType {
+import org.strangeforest.hibernate.util.*;
+
+public enum PhoneType implements Coded {
 	HOME("H"),
 	MOBILE("M");
 
@@ -12,27 +14,10 @@ public enum PhoneType {
 		this.code = code;
 	}
 
-	public String code() {
+	@Override public String code() {
 		return code;
 	}
 
-	public static PhoneType fromCode(String code) {
-		for (PhoneType phoneType : values()) {
-			if (phoneType.code.equals(code))
-				return phoneType;
-		}
-		throw new IllegalArgumentException("Invalid PhoneType code: " + code);
-	}
-
 	@Converter(autoApply = true)
-	public static class PhoneTypeConverter implements AttributeConverter<PhoneType, String> {
-
-		@Override public String convertToDatabaseColumn(PhoneType phoneType) {
-			return phoneType.code();
-		}
-
-		@Override public PhoneType convertToEntityAttribute(String code) {
-			return fromCode(code);
-		}
-	}
+	public static class PhoneTypeConverter extends CodedEnumConverter<PhoneType> implements AttributeConverter<PhoneType, String> {}
 }
