@@ -1,10 +1,10 @@
 package test.strangeforest.hibernate;
 
+import java.time.*;
 import java.util.*;
 import javax.persistence.*;
 import javax.validation.*;
 
-import org.joda.time.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.test.context.*;
 import org.springframework.test.context.testng.*;
@@ -38,7 +38,7 @@ public class PlayerIT extends AbstractTestNGSpringContextTests {
 	@Test(dependsOnMethods = "playerIsCreated")
 	public void playerDoBIsUpdated() {
 		Player player = getPlayer();
-		LocalDate dob = new LocalDate(1987, 5, 2);
+		LocalDate dob = LocalDate.of(1987, 5, 2);
 		player.setDateOfBirth(dob);
 		players.save(player);
 

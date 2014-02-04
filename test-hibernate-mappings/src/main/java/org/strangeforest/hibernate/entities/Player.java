@@ -1,6 +1,7 @@
 package org.strangeforest.hibernate.entities;
 
 import java.math.*;
+import java.time.*;
 import java.util.*;
 import javax.persistence.*;
 import javax.persistence.Entity;
@@ -9,7 +10,6 @@ import javax.validation.*;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.*;
-import org.joda.time.*;
 
 import static java.util.stream.Collectors.*;
 import static javax.persistence.CascadeType.*;
@@ -24,7 +24,7 @@ public class Player {
 
 	@Id @GeneratedValue private long id;
 	@Column(unique = true) private String name;
-	@Temporal(DATE) private Date dateOfBirth;
+	private LocalDate dateOfBirth;
 	@Embedded private Address residence;
 	@Embedded @Valid private EMailAddress eMail;
 
@@ -66,11 +66,11 @@ public class Player {
 	}
 
 	public LocalDate getDateOfBirth() {
-		return LocalDate.fromDateFields(dateOfBirth);
+		return dateOfBirth;
 	}
 
 	public void setDateOfBirth(LocalDate dateOfBirth) {
-		this.dateOfBirth = dateOfBirth.toDate();
+		this.dateOfBirth = dateOfBirth;
 	}
 
 	public Address getResidence() {
