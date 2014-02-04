@@ -40,10 +40,10 @@ public class OrderPayment {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		OrderPayment item = (OrderPayment)o;
-		return id != null ? id.equals(item.id) : item.id == null;
+		return Objects.equals(id, item.id);
 	}
 
 	@Override public int hashCode() {
-		return id != null ? id.hashCode() : 0;
+		return Objects.hashCode(id);
 	}
 }

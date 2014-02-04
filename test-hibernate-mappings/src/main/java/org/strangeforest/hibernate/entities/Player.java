@@ -10,8 +10,8 @@ import javax.validation.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.*;
 import org.joda.time.*;
-import org.strangeforest.util.*;
 
+import static java.util.stream.Collectors.*;
 import static javax.persistence.CascadeType.*;
 import static javax.persistence.FetchType.*;
 import static javax.persistence.TemporalType.*;
@@ -110,11 +110,7 @@ public class Player {
 	}
 
 	public PlayerTitle findTitle(final Tournament tournament) {
-		return Algorithms.find(getTitles(), new Predicate<PlayerTitle>() {
-			@Override public boolean test(PlayerTitle title) {
-				return title.getTournamentId() == tournament.getId();
-			}
-		});
+		return getTitles().stream().filter(title -> title.getTournamentId() == tournament.getId()).findAny().get();
 	}
 
 	public void addTitle(Tournament tournament, int count) {
@@ -126,22 +122,15 @@ public class Player {
 	}
 
 	public int getTitleCount() {
-		int count = 0;
-		for (PlayerTitle title : getTitles())
-			count += title.getTitleCount();
-		return count;
+		return (int)getTitles().stream().collect(summarizingInt(PlayerTitle::getTitleCount)).getSum();
 	}
 
 	public List<PlayerSponsorship> getSponsorships() {
 		return sponsorships;
 	}
 
-	public PlayerSponsorship findSponsorship(final Sponsor sponsor) {
-		return Algorithms.find(getSponsorships(), new Predicate<PlayerSponsorship>() {
-			@Override public boolean test(PlayerSponsorship sponsorship) {
-				return sponsorship.getSponsor().getId().equals(sponsor.getId());
-			}
-		});
+	public PlayerSponsorship getSponsorship(final Sponsor sponsor) {
+		return getSponsorships().stream().filter(sponsorship -> sponsorship.getSponsor().getId().equals(sponsor.getId())).findFirst().get();
 	}
 
 	public void addSponsorship(Sponsor sponsor, int years, BigDecimal amount) {

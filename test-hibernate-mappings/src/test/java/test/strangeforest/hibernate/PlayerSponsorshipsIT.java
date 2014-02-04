@@ -42,13 +42,13 @@ public class PlayerSponsorshipsIT extends AbstractTestNGSpringContextTests {
 	public void playerSponsorshipIsUpdated() {
 		Player player = getPlayer();
 		Sponsor nike = sponsors.find("NIKE");
-		PlayerSponsorship sponsorship = player.findSponsorship(nike);
+		PlayerSponsorship sponsorship = player.getSponsorship(nike);
 		sponsorship.setYears(10);
 		sponsorship.setAmount(new BigDecimal(2e7));
 		players.save(player);
 
-		assertThat(getPlayer().findSponsorship(nike).getYears(), is(equalTo(10)));
-		assertThat(getPlayer().findSponsorship(nike).getAmount(), comparesEqualTo(new BigDecimal(2e7)));
+		assertThat(getPlayer().getSponsorship(nike).getYears(), is(equalTo(10)));
+		assertThat(getPlayer().getSponsorship(nike).getAmount(), comparesEqualTo(new BigDecimal(2e7)));
 	}
 
 

@@ -15,7 +15,7 @@ public class TournamentRepository extends JPARepository<Tournament> {
 
 	@Transactional(readOnly = true)
 	public Tournament findByName(String name) {
-		TypedQuery<Tournament> query = em.createQuery("from Tournament t where t.name = :name", Tournament.class);
+		TypedQuery<Tournament> query = em.createQuery("select t from Tournament t where t.name = :name", Tournament.class);
 		query.setParameter("name", name);
 		query.setHint(HINT_CACHEABLE, Boolean.TRUE);
 		return query.getSingleResult();

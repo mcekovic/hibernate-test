@@ -1,6 +1,7 @@
 package org.strangeforest.hibernate.entities;
 
 import java.io.*;
+import java.util.*;
 import javax.persistence.*;
 
 @Embeddable
@@ -31,14 +32,10 @@ public class OrderPaymentId implements Serializable {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		OrderPaymentId id = (OrderPaymentId)o;
-		if (order != null ? order.equals(id.order) : id.order != null) return false;
-		if (index != id.index) return false;
-		return true;
+		return Objects.equals(order, id.order) && index == id.index;
 	}
 
 	@Override public int hashCode() {
-		int result = order != null ? order.hashCode() : 0;
-		result = 31 * result + index;
-		return result;
+		return 31 * Objects.hashCode(order) + index;
 	}
 }

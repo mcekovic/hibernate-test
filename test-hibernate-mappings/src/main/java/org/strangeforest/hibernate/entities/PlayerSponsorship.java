@@ -1,6 +1,7 @@
 package org.strangeforest.hibernate.entities;
 
 import java.math.*;
+import java.util.*;
 import javax.persistence.*;
 
 import static javax.persistence.FetchType.*;
@@ -47,10 +48,10 @@ public class PlayerSponsorship {
 		if (this == o) return true;
 		if (!(o instanceof PlayerSponsorship)) return false;
 		PlayerSponsorship sponsorship = (PlayerSponsorship)o;
-		return getSponsor().getId().equals(sponsorship.getSponsor().getId());
+		return Objects.equals(getSponsor().getId(), sponsorship.getSponsor().getId());
 	}
 
 	@Override public int hashCode() {
-		return getSponsor().getId().hashCode();
+		return Objects.hashCode(getSponsor().getId());
 	}
 }
