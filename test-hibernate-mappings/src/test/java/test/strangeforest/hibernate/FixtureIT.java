@@ -13,6 +13,7 @@ import org.testng.annotations.*;
 
 import com.fasterxml.jackson.databind.*;
 
+import static java.util.stream.Collectors.*;
 import static org.strangeforest.hibernate.entities.TournamentType.*;
 
 @ContextConfiguration(locations = "classpath:test-hibernate.xml")
@@ -33,9 +34,7 @@ public class FixtureIT extends AbstractTestNGSpringContextTests {
 	public void cleanUpSuite() throws IOException {
 		dataSource.dropConnections();
 		System.out.println("GetCount: " + dataSource.getStatistics().get("GetCount"));
-		long executions = 0;
-		for (Map<String, Object> stStat : (Iterable<Map<String, Object>>)dataSource.getStatistics().get("Statements"))
-			executions += (Long)stStat.get("Executions");
+		long executions = ((List<Map<String, Object>>)dataSource.getStatistics().get("Statements")).stream().collect(summarizingLong(stStat -> (Long)stStat.get("Executions"))).getSum();
 		System.out.println("Executions: " + executions);
 		new ObjectMapper().writerWithDefaultPrettyPrinter().writeValue(System.out, dataSource.getStatistics());
 	}

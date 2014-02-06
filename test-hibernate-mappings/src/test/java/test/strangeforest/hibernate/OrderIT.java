@@ -49,7 +49,6 @@ public class OrderIT extends AbstractTestNGSpringContextTests {
 	}
 
 
-
 	// Util
 
 	private Order getOrder() {

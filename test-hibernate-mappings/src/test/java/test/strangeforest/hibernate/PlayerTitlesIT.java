@@ -3,7 +3,6 @@ package test.strangeforest.hibernate;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.test.context.*;
 import org.springframework.test.context.testng.*;
-import org.springframework.transaction.*;
 import org.springframework.transaction.support.*;
 import org.strangeforest.hibernate.entities.*;
 import org.strangeforest.hibernate.repositories.*;
@@ -24,15 +23,13 @@ public class PlayerTitlesIT extends AbstractTestNGSpringContextTests {
 
 	@Test(dependsOnGroups = "TournamentFixture")
 	public void createPlayerWithTitles() {
-		transactionTemplate.execute(new TransactionCallback<Player>() {
-			@Override public Player doInTransaction(TransactionStatus status) {
-				Player player = new Player(PLAYER_NAME);
-				Tournament australianOpen = tournaments.findByName("Australian Open");
-				player.addTitle(australianOpen, 1);
-				players.create(player);
-				playerId = player.getId();
-				return player;
-			}
+		transactionTemplate.execute(status -> {
+			Player player = new Player(PLAYER_NAME);
+			Tournament australianOpen = tournaments.findByName("Australian Open");
+			player.addTitle(australianOpen, 1);
+			players.create(player);
+			playerId = player.getId();
+			return player;
 		});
 	}
 

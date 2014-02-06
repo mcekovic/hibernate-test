@@ -5,7 +5,6 @@ import java.math.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.test.context.*;
 import org.springframework.test.context.testng.*;
-import org.springframework.transaction.*;
 import org.springframework.transaction.support.*;
 import org.strangeforest.hibernate.entities.*;
 import org.strangeforest.hibernate.repositories.*;
@@ -26,15 +25,13 @@ public class PlayerSponsorshipsIT extends AbstractTestNGSpringContextTests {
 
 	@Test(dependsOnGroups = {"SponsorsFixture"})
 	public void createPlayerWithSponsorship() {
-		transactionTemplate.execute(new TransactionCallback<Player>() {
-			@Override public Player doInTransaction(TransactionStatus status) {
-				Player player = new Player(PLAYER_NAME);
-				Sponsor nike = sponsors.find("NIKE");
-				player.addSponsorship(nike, 5, new BigDecimal(1e7));
-				players.create(player);
-				playerId = player.getId();
-				return player;
-			}
+		transactionTemplate.execute(status -> {
+			Player player = new Player(PLAYER_NAME);
+			Sponsor nike = sponsors.find("NIKE");
+			player.addSponsorship(nike, 5, new BigDecimal(1e7));
+			players.create(player);
+			playerId = player.getId();
+			return player;
 		});
 	}
 
