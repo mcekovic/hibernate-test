@@ -14,7 +14,6 @@ import org.hibernate.annotations.*;
 import static java.util.stream.Collectors.*;
 import static javax.persistence.CascadeType.*;
 import static javax.persistence.FetchType.*;
-import static javax.persistence.TemporalType.*;
 import static org.hibernate.annotations.CacheConcurrencyStrategy.*;
 
 @Entity
@@ -109,7 +108,7 @@ public class Player {
 		return titles;
 	}
 
-	public PlayerTitle findTitle(final Tournament tournament) {
+	public PlayerTitle getTitle(final Tournament tournament) {
 		return getTitles().stream().filter(title -> title.getTournamentId() == tournament.getId()).findAny().get();
 	}
 

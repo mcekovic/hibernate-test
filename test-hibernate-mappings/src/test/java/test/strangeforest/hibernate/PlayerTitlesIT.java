@@ -39,7 +39,7 @@ public class PlayerTitlesIT extends AbstractTestNGSpringContextTests {
 		Tournament wimbledon = tournaments.findByName("Wimbledon");
 		Tournament usOpen = tournaments.findByName("US Open");
 		Player player = getPlayerWithTitles();
-		player.findTitle(australianOpen).setTitleCount(4);
+		player.getTitle(australianOpen).setTitleCount(4);
 		player.addTitle(wimbledon, 1);
 		player.addTitle(usOpen, 1);
 		players.save(player);
