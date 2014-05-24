@@ -55,8 +55,8 @@ public class PlayerIT extends AbstractTestNGSpringContextTests {
 		assertThat(getPlayer().getResidence().getCity(), is(equalTo("Monte Karlo")));
 	}
 
-	@Test(dependsOnMethods = "playerResidenceIsUpdated")
-	public void playerEMailIsInvalid() {
+	@Test(dependsOnMethods = "playerResidenceIsUpdated", expectedExceptions = ConstraintViolationException.class)
+	public void playerEMailIsInvalid() throws Throwable {
 		Player player = getPlayer();
 		player.setEMail("nole@djoker!net");
 		try {
@@ -64,7 +64,7 @@ public class PlayerIT extends AbstractTestNGSpringContextTests {
 			fail("E-Mail should be invalid.");
 		}
 		catch (Exception ex) {
-			assertThat(ExceptionUtil.getRootCause(ex), instanceOf(ConstraintViolationException.class));
+			throw ExceptionUtil.getRootCause(ex);
 		}
 	}
 
@@ -132,14 +132,11 @@ public class PlayerIT extends AbstractTestNGSpringContextTests {
 		assertThat(player.getTitles(), is(empty()));
 	}
 
-	@Test(dependsOnMethods = "playerIsQueriedByName")
+	@Test(dependsOnMethods = "playerIsQueriedByName", expectedExceptions = EntityNotFoundException.class)
 	public void playerIdDeleted() {
 		players.deleteById(playerId);
-		try {
-			getPlayer();
-			fail("Player is not deleted.");
-		}
-		catch (EntityNotFoundException ignored) {}
+		getPlayer();
+		fail("Player is not deleted.");
 	}
 
 

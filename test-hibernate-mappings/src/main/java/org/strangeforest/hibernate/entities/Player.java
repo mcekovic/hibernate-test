@@ -48,10 +48,6 @@ public class Player {
 
 	public Player() {}
 
-	public Player(long id) {
-		this.id = id;
-	}
-
 	public Player(String name) {
 		this.name = name;
 	}
@@ -108,7 +104,7 @@ public class Player {
 		return titles;
 	}
 
-	public PlayerTitle getTitle(final Tournament tournament) {
+	public PlayerTitle getTitle(Tournament tournament) {
 		return getTitles().stream().filter(title -> title.getTournamentId() == tournament.getId()).findAny().get();
 	}
 
@@ -128,7 +124,7 @@ public class Player {
 		return sponsorships;
 	}
 
-	public PlayerSponsorship getSponsorship(final Sponsor sponsor) {
+	public PlayerSponsorship getSponsorship(Sponsor sponsor) {
 		return getSponsorships().stream().filter(sponsorship -> sponsorship.getSponsor().getId().equals(sponsor.getId())).findFirst().get();
 	}
 
