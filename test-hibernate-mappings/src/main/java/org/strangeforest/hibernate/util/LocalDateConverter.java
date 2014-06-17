@@ -8,20 +8,10 @@ import javax.persistence.*;
 public class LocalDateConverter implements AttributeConverter<LocalDate, Date> {
 
 	@Override public Date convertToDatabaseColumn(LocalDate localDate) {
-		if (localDate != null) {
-			Instant instant = localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
-			return new Date(instant.toEpochMilli());
-		}
-		else
-			return null;
+		return localDate != null ? Date.valueOf(localDate) : null;
 	}
 
 	@Override public LocalDate convertToEntityAttribute(Date date) {
-		if (date != null) {
-			Instant instant = Instant.ofEpochMilli(date.getTime());
-			return LocalDateTime.ofInstant(instant, ZoneId.systemDefault()).toLocalDate();
-		}
-		else
-			return null;
+		return date != null ? date.toLocalDate() : null;
 	}
 }
