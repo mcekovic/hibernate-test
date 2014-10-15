@@ -1,5 +1,7 @@
 package test.strangeforest.hibernate;
 
+import java.math.*;
+
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.test.context.*;
 import org.springframework.test.context.testng.*;
@@ -25,7 +27,7 @@ public class OrderIT extends AbstractTestNGSpringContextTests {
 	}
 
 	@Test(dependsOnMethods = "createOrder")
-	public void orderItemIsAdded() {
+	public void orderItemsAreAdded() {
 		Order order = getOrder();
 		order.addItem(1, "Pasulj", 3);
 		order.addItem(2, "Rotkvice", 2);
@@ -38,14 +40,33 @@ public class OrderIT extends AbstractTestNGSpringContextTests {
 		assertThat(getOrder().getItemCount(), is(equalTo(6)));
 	}
 
-	@Test(dependsOnMethods = "orderItemIsAdded")
-	public void orderItemIsUpdated() {
+	@Test(dependsOnMethods = "orderItemsAreAdded")
+	public void orderItemsAreUpdated() {
 		Order order = getOrder();
 		order.getItem(1).setCount(5);
 		order.getItem(2).setCount(4);
 		orders.save(order);
 
 		assertThat(getOrder().getItemCount(), is(equalTo(10)));
+	}
+
+	@Test(dependsOnMethods = "orderItemsAreUpdated")
+	public void orderPaymentIsAdded() {
+		Order order = getOrder();
+		order.addPayment(1, new BigDecimal("5"));
+		order.getItem(2).setCount(4);
+		orders.save(order);
+
+		assertThat(getOrder().getPayment(1).getAmount(), comparesEqualTo(new BigDecimal("5")));
+	}
+
+	@Test(dependsOnMethods = "orderPaymentIsAdded")
+	public void orderPaymentIsUpdated() {
+		Order order = getOrder();
+		order.getPayment(1).setAmount(new BigDecimal("6"));
+		orders.save(order);
+
+		assertThat(getOrder().getPayment(1).getAmount(), comparesEqualTo(new BigDecimal("6")));
 	}
 
 

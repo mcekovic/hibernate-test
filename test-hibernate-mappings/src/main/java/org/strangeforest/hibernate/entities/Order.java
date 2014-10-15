@@ -1,5 +1,6 @@
 package org.strangeforest.hibernate.entities;
 
+import java.math.*;
 import java.util.*;
 import javax.persistence.*;
 import javax.persistence.Entity;
@@ -69,6 +70,14 @@ public class Order {
 
 	public List<OrderPayment> getPayments() {
 		return payments;
+	}
+
+	public OrderPayment getPayment(int index) {
+		return getPayments().stream().filter(payment -> payment.getIndex() == index).findFirst().get();
+	}
+
+	public void addPayment(int index, BigDecimal amount) {
+		getPayments().add(new OrderPayment(this, index, amount));
 	}
 
 

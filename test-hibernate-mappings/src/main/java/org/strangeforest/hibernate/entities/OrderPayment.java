@@ -25,8 +25,16 @@ public class OrderPayment {
 		return id;
 	}
 
+	public int getIndex() {
+		return id.getIndex();
+	}
+
 	public BigDecimal getAmount() {
 		return amount;
+	}
+
+	public void setAmount(BigDecimal amount) {
+		this.amount = amount;
 	}
 
 	public Calendar getTimestamp() {
