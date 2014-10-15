@@ -69,6 +69,15 @@ public class OrderIT extends AbstractTestNGSpringContextTests {
 		assertThat(getOrder().getPayment(1).getAmount(), comparesEqualTo(new BigDecimal("6")));
 	}
 
+	@Test(dependsOnMethods = "orderPaymentIsUpdated")
+	public void newOrderPaymentIsAdded() {
+		Order order = getOrder();
+		order.addPayment(2, new BigDecimal("10"));
+		orders.save(order);
+
+		assertThat(getOrder().getPaymentAmount(), comparesEqualTo(new BigDecimal("16")));
+	}
+
 
 	// Util
 
