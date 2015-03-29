@@ -1,6 +1,9 @@
 package org.strangeforest.hibernate.entities;
 
+import java.math.*;
 import java.util.*;
+import java.util.function.*;
+import java.util.stream.*;
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.OrderBy;
@@ -61,14 +64,23 @@ public class Order {
 	}
 
 	public int getItemCount() {
-		int count = 0;
-		for (OrderItem item : getItems().values())
-			count += item.getCount();
-		return count;
+		return getItems().values().stream().map(OrderItem::getCount).reduce((c1, c2) -> c1 + c2).get();
 	}
 
 	public List<OrderPayment> getPayments() {
 		return payments;
+	}
+
+	public OrderPayment getPayment(int index) {
+		return getPayments().stream().filter(payment -> payment.getIndex() == index).findFirst().get();
+	}
+
+	public void addPayment(int index, BigDecimal amount) {
+		getPayments().add(new OrderPayment(this, index, amount));
+	}
+
+	public BigDecimal getPaymentAmount() {
+		return getPayments().stream().map(OrderPayment::getAmount).reduce((d1, d2) -> d1.add(d2)).get();
 	}
 
 

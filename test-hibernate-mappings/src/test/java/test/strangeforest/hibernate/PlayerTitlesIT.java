@@ -6,6 +6,7 @@ import org.springframework.test.context.testng.*;
 import org.springframework.transaction.support.*;
 import org.strangeforest.hibernate.entities.*;
 import org.strangeforest.hibernate.repositories.*;
+import org.strangeforest.util.*;
 import org.testng.annotations.*;
 
 import static org.assertj.core.api.Assertions.*;
@@ -22,14 +23,20 @@ public class PlayerTitlesIT extends AbstractTestNGSpringContextTests {
 
 	@Test(dependsOnGroups = "TournamentFixture")
 	public void createPlayerWithTitles() {
+		final Reference<Player> playerRef = new Reference<>();
 		transactionTemplate.execute(status -> {
 			Player player = new Player(PLAYER_NAME);
 			Tournament australianOpen = tournaments.findByName("Australian Open");
 			player.addTitle(australianOpen, 1);
 			players.create(player);
 			playerId = player.getId();
+			playerRef.set(player);
 			return player;
 		});
+
+		Player player = playerRef.get();
+		assertThat(player.getTitleCount(), is(equalTo(1)));
+		assertThat(player.getTitles().get(0).getPlayerId(), is(not(0L)));
 	}
 
 	@Test(dependsOnMethods = "createPlayerWithTitles", dependsOnGroups = "TournamentFixture")
