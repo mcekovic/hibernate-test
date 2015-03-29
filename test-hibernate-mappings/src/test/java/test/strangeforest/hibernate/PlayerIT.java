@@ -10,11 +10,9 @@ import org.springframework.test.context.*;
 import org.springframework.test.context.testng.*;
 import org.strangeforest.hibernate.entities.*;
 import org.strangeforest.hibernate.repositories.*;
-import org.strangeforest.util.*;
 import org.testng.annotations.*;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.*;
 
 @ContextConfiguration(locations = "classpath:test-hibernate.xml")
 public class PlayerIT extends AbstractTestNGSpringContextTests {
@@ -32,7 +30,7 @@ public class PlayerIT extends AbstractTestNGSpringContextTests {
 		players.create(player);
 		playerId = player.getId();
 
-		assertThat(getPlayer().getName(), is(equalTo(PLAYER_NAME)));
+		assertThat(getPlayer().getName()).isEqualTo(PLAYER_NAME);
 	}
 
 	@Test(dependsOnMethods = "playerIsCreated")
@@ -42,7 +40,7 @@ public class PlayerIT extends AbstractTestNGSpringContextTests {
 		player.setDateOfBirth(dob);
 		players.save(player);
 
-		assertThat(getPlayer().getDateOfBirth(), is(equalTo(dob)));
+		assertThat(getPlayer().getDateOfBirth()).isEqualTo(dob);
 	}
 
 	@Test(dependsOnMethods = "playerDoBIsUpdated", dependsOnGroups = "CountryFixture")
@@ -52,20 +50,14 @@ public class PlayerIT extends AbstractTestNGSpringContextTests {
 		player.setEMail("nole@djoker.net");
 		players.save(player);
 
-		assertThat(getPlayer().getResidence().getCity(), is(equalTo("Monte Karlo")));
+		assertThat(getPlayer().getResidence().getCity()).isEqualTo("Monte Karlo");
 	}
 
-	@Test(dependsOnMethods = "playerResidenceIsUpdated", expectedExceptions = ConstraintViolationException.class)
+	@Test(dependsOnMethods = "playerResidenceIsUpdated")
 	public void playerEMailIsInvalid() throws Throwable {
 		Player player = getPlayer();
 		player.setEMail("nole@djoker!net");
-		try {
-			players.save(player);
-			fail("E-Mail should be invalid.");
-		}
-		catch (Exception ex) {
-			throw ExceptionUtil.getRootCause(ex);
-		}
+		assertThatThrownBy(() -> players.save(player)).hasRootCauseInstanceOf(ConstraintViolationException.class);
 	}
 
 	@Test(dependsOnMethods = "playerEMailIsInvalid", dependsOnGroups = "CountryFixture")
@@ -75,8 +67,8 @@ public class PlayerIT extends AbstractTestNGSpringContextTests {
 		players.save(player);
 
 		List<Address> addresses = getPlayer().getAddresses();
-		assertThat(addresses, hasSize(1));
-		assertThat(addresses.get(0).getCity(), is(equalTo("Zagubica")));
+		assertThat(addresses).hasSize(1);
+		assertThat(addresses).extracting(Address::getCity).contains("Zagubica");
 	}
 
 	@Test(dependsOnMethods = "playerAddressIsAdded")
@@ -89,9 +81,9 @@ public class PlayerIT extends AbstractTestNGSpringContextTests {
 		players.save(player);
 
 		Map<PhoneType, String> phones = getPlayer().getPhones();
-		assertThat(phones.entrySet(), hasSize(2));
-		assertThat(phones.get(PhoneType.MOBILE), is(equalTo(phoneNumber1)));
-		assertThat(phones.get(PhoneType.HOME), is(equalTo(phoneNumber2)));
+		assertThat(phones.entrySet()).hasSize(2);
+		assertThat(phones).containsEntry(PhoneType.MOBILE, phoneNumber1);
+		assertThat(phones).containsEntry(PhoneType.HOME, phoneNumber2);
 	}
 
 	@Test(dependsOnMethods = "playerPhonesAreAdded")
@@ -102,8 +94,8 @@ public class PlayerIT extends AbstractTestNGSpringContextTests {
 		players.save(player);
 
 		Map<PhoneType, String> phones = getPlayer().getPhones();
-		assertThat(phones.entrySet(), hasSize(2));
-		assertThat(phones.get(PhoneType.MOBILE), is(equalTo(phoneNumber1)));
+		assertThat(phones.entrySet()).hasSize(2);
+		assertThat(phones).containsEntry(PhoneType.MOBILE, phoneNumber1);
 	}
 
 	@Test(dependsOnMethods = "playerPhoneIsUpdated", dependsOnGroups = "TournamentFixture")
@@ -112,7 +104,7 @@ public class PlayerIT extends AbstractTestNGSpringContextTests {
 		player.setFavouriteTournament(tournaments.findByName("Australian Open"));
 		players.save(player);
 
-		assertThat(player.getFavouriteTournament().getName(), is(equalTo("Australian Open")));
+		assertThat(player.getFavouriteTournament().getName()).isEqualTo("Australian Open");
 	}
 
 	@Test(dependsOnMethods = "playerFavouriteTournamentIsSet")
@@ -120,16 +112,16 @@ public class PlayerIT extends AbstractTestNGSpringContextTests {
 		Player player = players.findByName(PLAYER_NAME);
 		Player player2 = players.findByName(PLAYER_NAME);
 
-		assertThat(player.getName(), is(equalTo(PLAYER_NAME)));
-		assertThat(player2.getName(), is(equalTo(PLAYER_NAME)));
+		assertThat(player.getName()).isEqualTo(PLAYER_NAME);
+		assertThat(player2.getName()).isEqualTo(PLAYER_NAME);
 	}
 
 	@Test(dependsOnMethods = "playerIsFoundByName")
 	public void playerIsQueriedByName() {
 		Player player = players.queryOne("select p from Player p where p.name = :name", params("name", PLAYER_NAME), "WithTitles");
-		assertThat(player.getPhones().entrySet(), hasSize(2));
-		assertThat(player.getAddresses(), hasSize(1));
-		assertThat(player.getTitles(), is(empty()));
+		assertThat(player.getPhones().entrySet()).hasSize(2);
+		assertThat(player.getAddresses()).hasSize(1);
+		assertThat(player.getTitles()).isEmpty();
 	}
 
 	@Test(dependsOnMethods = "playerIsQueriedByName", expectedExceptions = EntityNotFoundException.class)

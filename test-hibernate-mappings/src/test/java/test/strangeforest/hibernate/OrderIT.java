@@ -7,8 +7,7 @@ import org.strangeforest.hibernate.entities.*;
 import org.strangeforest.hibernate.repositories.*;
 import org.testng.annotations.*;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.*;
 
 @ContextConfiguration(locations = "classpath:test-hibernate.xml")
 public class OrderIT extends AbstractTestNGSpringContextTests {
@@ -21,7 +20,7 @@ public class OrderIT extends AbstractTestNGSpringContextTests {
 		Order order = new Order("Nabavka");
 		orders.create(order);
 		orderId = order.getId();
-		assertThat(getOrder().getDescription(), is(equalTo("Nabavka")));
+		assertThat(getOrder().getDescription()).isEqualTo("Nabavka");
 	}
 
 	@Test(dependsOnMethods = "createOrder")
@@ -32,10 +31,10 @@ public class OrderIT extends AbstractTestNGSpringContextTests {
 		order.addItem(3, "Biber", 1);
 		orders.save(order);
 
-		assertThat(getOrder().getItemCount(), is(equalTo(6)));
-		assertThat(getOrder().getItemCount(), is(equalTo(6)));
-		assertThat(getOrder().getItemCount(), is(equalTo(6)));
-		assertThat(getOrder().getItemCount(), is(equalTo(6)));
+		assertThat(getOrder().getItemCount()).isEqualTo(6);
+		assertThat(getOrder().getItemCount()).isEqualTo(6);
+		assertThat(getOrder().getItemCount()).isEqualTo(6);
+		assertThat(getOrder().getItemCount()).isEqualTo(6);
 	}
 
 	@Test(dependsOnMethods = "orderItemIsAdded")
@@ -45,7 +44,7 @@ public class OrderIT extends AbstractTestNGSpringContextTests {
 		order.getItem(2).setCount(4);
 		orders.save(order);
 
-		assertThat(getOrder().getItemCount(), is(equalTo(10)));
+		assertThat(getOrder().getItemCount()).isEqualTo(10);
 	}
 
 

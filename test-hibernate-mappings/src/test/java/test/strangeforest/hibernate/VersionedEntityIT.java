@@ -10,8 +10,7 @@ import org.strangeforest.hibernate.entities.*;
 import org.strangeforest.hibernate.repositories.*;
 import org.testng.annotations.*;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.*;
 
 @ContextConfiguration(locations = "classpath:test-hibernate.xml")
 public class VersionedEntityIT extends AbstractTestNGSpringContextTests {
@@ -31,7 +30,7 @@ public class VersionedEntityIT extends AbstractTestNGSpringContextTests {
 		entities.create(entity);
 		entityId = entity.getId();
 
-		assertThat(getEntity().getVersion(), is(equalTo(0)));
+		assertThat(getEntity().getVersion()).isEqualTo(0);
 	}
 
 	@Test(dependsOnMethods = "entityIsCreated")
@@ -40,7 +39,7 @@ public class VersionedEntityIT extends AbstractTestNGSpringContextTests {
 		entity.setName(ENTITY_NAME + '!');
 		entities.save(entity);
 
-		assertThat(getEntity().getVersion(), is(equalTo(1)));
+		assertThat(getEntity().getVersion()).isEqualTo(1);
 	}
 
 	@Test(dependsOnMethods = "entityIsUpdated")
@@ -50,8 +49,8 @@ public class VersionedEntityIT extends AbstractTestNGSpringContextTests {
 		entities.save(entity);
 
 		VersionedEntity savedEntity = getEntity();
-		assertThat(savedEntity.getDetails(), hasSize(1));
-		assertThat(savedEntity.getVersion(), is(equalTo(2)));
+		assertThat(savedEntity.getDetails()).hasSize(1);
+		assertThat(savedEntity.getVersion()).isEqualTo(2);
 	}
 
 	@Test(dependsOnMethods = "detailIsAdded")
