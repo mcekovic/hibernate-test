@@ -35,8 +35,8 @@ public class PlayerTitlesIT extends AbstractTestNGSpringContextTests {
 		});
 
 		Player player = playerRef.get();
-		assertThat(player.getTitleCount(), is(equalTo(1)));
-		assertThat(player.getTitles().get(0).getPlayerId(), is(not(0L)));
+		assertThat(player.getTitleCount()).isEqualTo(1);
+		assertThat(player.getTitles().get(0).getPlayerId()).isNotZero();
 	}
 
 	@Test(dependsOnMethods = "createPlayerWithTitles", dependsOnGroups = "TournamentFixture")
