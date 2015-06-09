@@ -10,8 +10,7 @@ import org.strangeforest.hibernate.entities.*;
 import org.strangeforest.hibernate.repositories.*;
 import org.testng.annotations.*;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.*;
 
 @ContextConfiguration(locations = "classpath:test-hibernate.xml")
 public class PlayerSponsorshipsIT extends AbstractTestNGSpringContextTests {
@@ -44,8 +43,8 @@ public class PlayerSponsorshipsIT extends AbstractTestNGSpringContextTests {
 		sponsorship.setAmount(new BigDecimal(2e7));
 		players.save(player);
 
-		assertThat(getPlayer().getSponsorship(nike).getYears(), is(equalTo(10)));
-		assertThat(getPlayer().getSponsorship(nike).getAmount(), comparesEqualTo(new BigDecimal(2e7)));
+		assertThat(getPlayer().getSponsorship(nike).getYears()).isEqualTo(10);
+		assertThat(getPlayer().getSponsorship(nike).getAmount()).isEqualByComparingTo(new BigDecimal(2e7));
 	}
 
 

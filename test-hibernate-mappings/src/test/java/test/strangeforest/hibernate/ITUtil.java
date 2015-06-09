@@ -4,7 +4,7 @@ import java.io.*;
 
 public interface ITUtil {
 
-	public static void deleteFiles(String dir, final String pattern) {
+	static void deleteFiles(String dir, final String pattern) {
 		File dirFile = new File(dir);
 		if (!dirFile.exists())
 			return;

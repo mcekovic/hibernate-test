@@ -9,8 +9,7 @@ import org.strangeforest.hibernate.repositories.*;
 import org.strangeforest.util.*;
 import org.testng.annotations.*;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.*;
 
 @ContextConfiguration(locations = "classpath:test-hibernate.xml")
 public class PlayerTitlesIT extends AbstractTestNGSpringContextTests {
@@ -36,8 +35,8 @@ public class PlayerTitlesIT extends AbstractTestNGSpringContextTests {
 		});
 
 		Player player = playerRef.get();
-		assertThat(player.getTitleCount(), is(equalTo(1)));
-		assertThat(player.getTitles().get(0).getPlayerId(), is(not(0L)));
+		assertThat(player.getTitleCount()).isEqualTo(1);
+		assertThat(player.getTitles().get(0).getPlayerId()).isNotZero();
 	}
 
 	@Test(dependsOnMethods = "createPlayerWithTitles", dependsOnGroups = "TournamentFixture")
@@ -51,8 +50,8 @@ public class PlayerTitlesIT extends AbstractTestNGSpringContextTests {
 		player.addTitle(usOpen, 1);
 		players.save(player);
 
-		assertThat(getPlayerWithTitles().getTitleCount(), is(equalTo(6)));
-		assertThat(getPlayerWithTitles().getTitleCount(), is(equalTo(6)));
+		assertThat(getPlayerWithTitles().getTitleCount()).isEqualTo(6);
+		assertThat(getPlayerWithTitles().getTitleCount()).isEqualTo(6);
 	}
 
 

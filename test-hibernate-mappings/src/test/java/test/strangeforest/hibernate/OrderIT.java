@@ -9,8 +9,7 @@ import org.strangeforest.hibernate.entities.*;
 import org.strangeforest.hibernate.repositories.*;
 import org.testng.annotations.*;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.*;
 
 @ContextConfiguration(locations = "classpath:test-hibernate.xml")
 public class OrderIT extends AbstractTestNGSpringContextTests {
@@ -23,7 +22,7 @@ public class OrderIT extends AbstractTestNGSpringContextTests {
 		Order order = new Order("Nabavka");
 		orders.create(order);
 		orderId = order.getId();
-		assertThat(getOrder().getDescription(), is(equalTo("Nabavka")));
+		assertThat(getOrder().getDescription()).isEqualTo("Nabavka");
 	}
 
 	@Test(dependsOnMethods = "createOrder")
@@ -34,10 +33,10 @@ public class OrderIT extends AbstractTestNGSpringContextTests {
 		order.addItem(3, "Biber", 1);
 		orders.save(order);
 
-		assertThat(getOrder().getItemCount(), is(equalTo(6)));
-		assertThat(getOrder().getItemCount(), is(equalTo(6)));
-		assertThat(getOrder().getItemCount(), is(equalTo(6)));
-		assertThat(getOrder().getItemCount(), is(equalTo(6)));
+		assertThat(getOrder().getItemCount()).isEqualTo(6);
+		assertThat(getOrder().getItemCount()).isEqualTo(6);
+		assertThat(getOrder().getItemCount()).isEqualTo(6);
+		assertThat(getOrder().getItemCount()).isEqualTo(6);
 	}
 
 	@Test(dependsOnMethods = "orderItemsAreAdded")
@@ -47,7 +46,7 @@ public class OrderIT extends AbstractTestNGSpringContextTests {
 		order.getItem(2).setCount(4);
 		orders.save(order);
 
-		assertThat(getOrder().getItemCount(), is(equalTo(10)));
+		assertThat(getOrder().getItemCount()).isEqualTo(10);
 	}
 
 	@Test(dependsOnMethods = "orderItemsAreUpdated")
@@ -57,7 +56,7 @@ public class OrderIT extends AbstractTestNGSpringContextTests {
 		order.getItem(2).setCount(4);
 		orders.save(order);
 
-		assertThat(getOrder().getPayment(1).getAmount(), comparesEqualTo(new BigDecimal("5")));
+		assertThat(getOrder().getPayment(1).getAmount()).isEqualByComparingTo(new BigDecimal("5"));
 	}
 
 	@Test(dependsOnMethods = "orderPaymentIsAdded")
@@ -66,7 +65,7 @@ public class OrderIT extends AbstractTestNGSpringContextTests {
 		order.getPayment(1).setAmount(new BigDecimal("6"));
 		orders.save(order);
 
-		assertThat(getOrder().getPayment(1).getAmount(), comparesEqualTo(new BigDecimal("6")));
+		assertThat(getOrder().getPayment(1).getAmount()).isEqualByComparingTo(new BigDecimal("6"));
 	}
 
 	@Test(dependsOnMethods = "orderPaymentIsUpdated")
@@ -75,7 +74,7 @@ public class OrderIT extends AbstractTestNGSpringContextTests {
 		order.addPayment(2, new BigDecimal("10"));
 		orders.save(order);
 
-		assertThat(getOrder().getPaymentAmount(), comparesEqualTo(new BigDecimal("16")));
+		assertThat(getOrder().getPaymentAmount()).isEqualByComparingTo(new BigDecimal("16"));
 	}
 
 
