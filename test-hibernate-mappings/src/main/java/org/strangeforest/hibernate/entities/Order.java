@@ -2,8 +2,6 @@ package org.strangeforest.hibernate.entities;
 
 import java.math.*;
 import java.util.*;
-import java.util.function.*;
-import java.util.stream.*;
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.OrderBy;
