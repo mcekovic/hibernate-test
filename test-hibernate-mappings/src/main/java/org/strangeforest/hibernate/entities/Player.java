@@ -52,8 +52,10 @@ public class Player {
 		this.name = name;
 	}
 
-	public Player(long id, String name) {
+	public Player(long id, String name, EMailAddress eMail) {
+		this.id = id;
 		this.name = name;
+		this.eMail = eMail;
 	}
 
 	public long getId() {

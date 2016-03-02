@@ -42,7 +42,7 @@ public class PlayerRepository extends JPARepository<Player> {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Player> query = cb.createQuery(Player.class);
 		Root<Player> player = query.from(Player.class);
-		query.select(cb.construct(Player.class, player.get("id"), player.get("name")));
+		query.select(cb.construct(Player.class, player.get("id"), player.get("name"), player.get("eMail")));
 		query.where(cb.equal(player.get("id"), cb.parameter(Long.class, "id")));
 		TypedQuery<Player> typedQuery = em.createQuery(query);
 		typedQuery.setParameter("id", id);

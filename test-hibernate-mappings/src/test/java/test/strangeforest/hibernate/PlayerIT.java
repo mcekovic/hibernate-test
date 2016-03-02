@@ -51,6 +51,7 @@ public class PlayerIT extends AbstractTestNGSpringContextTests {
 		players.save(player);
 
 		assertThat(getPlayer().getResidence().getCity()).isEqualTo("Monte Karlo");
+		assertThat(getPlayer().getEMail()).isNotNull();
 	}
 
 	@Test(dependsOnMethods = "playerResidenceIsUpdated")
@@ -127,11 +128,18 @@ public class PlayerIT extends AbstractTestNGSpringContextTests {
 	@Test(dependsOnMethods = "playerIsQueriedByName")
 	public void playerProjectionIsFound() {
 		Player player = players.findProjected(playerId);
+		assertThat(player.getEMail()).isNotNull();
 		assertThat(player.getDateOfBirth()).isNull();
-		assertThat(player.getEMail()).isNull();
 	}
 
-	@Test(dependsOnMethods = "playerProjectionIsFound", expectedExceptions = EntityNotFoundException.class)
+	@Test(dependsOnMethods = "playerProjectionIsFound")
+	public void playerProjectionIsUpdated() {
+		Player player = players.findProjected(playerId);
+		player.setEMail(player.getEMail() + ".net");
+		players.save(player);
+	}
+
+	@Test(dependsOnMethods = "playerProjectionIsUpdated", expectedExceptions = EntityNotFoundException.class)
 	public void playerIdDeleted() {
 		players.deleteById(playerId);
 		getPlayer();
