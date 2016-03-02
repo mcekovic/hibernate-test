@@ -124,7 +124,14 @@ public class PlayerIT extends AbstractTestNGSpringContextTests {
 		assertThat(player.getTitles()).isEmpty();
 	}
 
-	@Test(dependsOnMethods = "playerIsQueriedByName", expectedExceptions = EntityNotFoundException.class)
+	@Test(dependsOnMethods = "playerIsQueriedByName")
+	public void playerProjectionIsFound() {
+		Player player = players.findProjected(playerId);
+		assertThat(player.getDateOfBirth()).isNull();
+		assertThat(player.getEMail()).isNull();
+	}
+
+	@Test(dependsOnMethods = "playerProjectionIsFound", expectedExceptions = EntityNotFoundException.class)
 	public void playerIdDeleted() {
 		players.deleteById(playerId);
 		getPlayer();

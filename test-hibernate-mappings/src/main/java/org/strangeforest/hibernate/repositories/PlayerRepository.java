@@ -1,6 +1,7 @@
 package org.strangeforest.hibernate.repositories;
 
 import javax.persistence.*;
+import javax.persistence.criteria.*;
 
 import org.springframework.stereotype.*;
 import org.springframework.transaction.annotation.*;
@@ -34,5 +35,18 @@ public class PlayerRepository extends JPARepository<Player> {
 		query.setParameter("name", name);
 		query.setHint(HINT_CACHEABLE, Boolean.TRUE);
 		return query.getSingleResult();
+	}
+
+	@Transactional(readOnly = true)
+	public Player findProjected(long id) {
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<Player> query = cb.createQuery(Player.class);
+		Root<Player> player = query.from(Player.class);
+		query.select(cb.construct(Player.class, player.get("id"), player.get("name")));
+		query.where(cb.equal(player.get("id"), cb.parameter(Long.class, "id")));
+		TypedQuery<Player> typedQuery = em.createQuery(query);
+		typedQuery.setParameter("id", id);
+		typedQuery.setHint(HINT_CACHEABLE, Boolean.TRUE);
+		return typedQuery.getSingleResult();
 	}
 }

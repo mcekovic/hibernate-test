@@ -52,6 +52,10 @@ public class Player {
 		this.name = name;
 	}
 
+	public Player(long id, String name) {
+		this.name = name;
+	}
+
 	public long getId() {
 		return id;
 	}

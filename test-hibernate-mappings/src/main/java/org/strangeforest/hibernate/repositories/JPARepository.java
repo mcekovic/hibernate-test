@@ -30,8 +30,8 @@ public abstract class JPARepository<E> {
 	}
 
 	@Transactional(readOnly = true)
-	public E queryOne(String query, Map<String, Object> params, String enityGrapth) {
-		return typedQuery(query, params, enityGrapth).getSingleResult();
+	public E queryOne(String query, Map<String, Object> params, String entityGraph) {
+		return typedQuery(query, params, entityGraph).getSingleResult();
 	}
 
 	public List<E> query(String query, Map<String, Object> params) {
@@ -39,16 +39,16 @@ public abstract class JPARepository<E> {
 	}
 
 	@Transactional(readOnly = true)
-	public List<E> query(String query, Map<String, Object> params, String entityGrapth) {
-		return typedQuery(query, params, entityGrapth).getResultList();
+	public List<E> query(String query, Map<String, Object> params, String entityGraph) {
+		return typedQuery(query, params, entityGraph).getResultList();
 	}
 
-	private TypedQuery<E> typedQuery(String query, Map<String, Object> params, String entityGrapth) {
+	private TypedQuery<E> typedQuery(String query, Map<String, Object> params, String entityGraph) {
 		TypedQuery<E> typedQuery = em.createQuery(query, entityClass);
 		for (Map.Entry<String, Object> param : params.entrySet())
 			typedQuery.setParameter(param.getKey(), param.getValue());
-		if (entityGrapth != null)
-			typedQuery.setHint(HINT_GRAPH, em.getEntityGraph(entityGrapth));
+		if (entityGraph != null)
+			typedQuery.setHint(HINT_GRAPH, em.getEntityGraph(entityGraph));
 		return typedQuery;
 	}
 
