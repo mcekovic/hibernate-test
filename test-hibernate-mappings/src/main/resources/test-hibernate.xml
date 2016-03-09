@@ -33,12 +33,12 @@
 		<property name="maxPendingCount" value="5"/>
 		<property name="initQuery" value="CREATE SCHEMA IF NOT EXISTS Test; SET SCHEMA Test"/>
 		<property name="checkQuery" value="SELECT 1"/>
-		<property name="checkTime" value="60"/>
+		<property name="checkTime" value="60000"/>
 		<property name="maxWaitTime" value="0"/>
-		<property name="maxIdleTime" value="300"/>
-		<property name="maxBusyTime" value="600"/>
-		<property name="maxLiveTime" value="3600"/>
-		<property name="propertyCycle" value="60"/>
+		<property name="maxIdleTime" value="300000"/>
+		<property name="maxBusyTime" value="600000"/>
+		<property name="maxLiveTime" value="3600000"/>
+		<property name="propertyCycle" value="60000"/>
 		<property name="maxStatements" value="100"/>
 		<property name="logger">
 			<bean class="org.strangeforest.db.logging.DBConnectionPoolLogger" c:loggerName="org.strangeforest.hibernate.jdbc"/>
@@ -72,6 +72,33 @@
 				<prop key="hibernate.cache.use_query_cache">true</prop>
 				<prop key="hibernate.max_fetch_depth">3</prop>
 				<prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="transactionManager2" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory2"/>
+	</bean>
+
+	<bean id="transactionTemplate2" class="org.springframework.transaction.support.TransactionTemplate">
+		<property name="transactionManager" ref="transactionManager2"/>
+	</bean>
+
+	<bean id="entityManagerFactory2" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="persistenceUnitName" value="TestPersistenceUnit2"/>
+		<property name="mappingResources" value="META-INF/orm2.xml"/>
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" p:database="H2" p:generateDdl="true" p:showSql="true"/>
+		</property>
+		<property name="dataSource">
+			<bean class="org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy" c:targetDataSource-ref="dataSource"/>
+		</property>
+		<property name="jpaProperties">
+			<props>
+				<prop key="hibernate.format_sql">true</prop>
+				<prop key="hibernate.cache.use_second_level_cache">false</prop>
+				<prop key="hibernate.cache.use_query_cache">false</prop>
+				<prop key="hibernate.max_fetch_depth">3</prop>
 			</props>
 		</property>
 	</bean>

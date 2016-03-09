@@ -5,19 +5,18 @@ import javax.persistence.*;
 
 import org.springframework.transaction.annotation.*;
 
-public abstract class JPARepository<E> {
+public abstract class JPARepository2<E> {
 
 	protected final Class<E> entityClass;
-	@PersistenceContext(unitName = "TestPersistenceUnit") protected EntityManager em;
+	@PersistenceContext(unitName = "TestPersistenceUnit2") protected EntityManager em;
 
 	protected static final String HINT_GRAPH     = "javax.persistence.fetchgraph";
-	protected static final String HINT_CACHEABLE = "org.hibernate.cacheable";
 
-	protected JPARepository(Class<E> entityClass) {
+	protected JPARepository2(Class<E> entityClass) {
 		this.entityClass = entityClass;
 	}
 
-	@Transactional(readOnly = true)
+	@Transactional(readOnly = true, transactionManager = "transactionManager2")
 	public E find(Object id) {
 		E entity = em.find(entityClass, id);
 		if (entity == null)
@@ -29,7 +28,7 @@ public abstract class JPARepository<E> {
 		return queryOne(query, params, null);
 	}
 
-	@Transactional(readOnly = true)
+	@Transactional(readOnly = true, transactionManager = "transactionManager2")
 	public E queryOne(String query, Map<String, Object> params, String entityGraph) {
 		return typedQuery(query, params, entityGraph).getSingleResult();
 	}
@@ -38,7 +37,7 @@ public abstract class JPARepository<E> {
 		return query(query, params, null);
 	}
 
-	@Transactional(readOnly = true)
+	@Transactional(readOnly = true, transactionManager = "transactionManager2")
 	public List<E> query(String query, Map<String, Object> params, String entityGraph) {
 		return typedQuery(query, params, entityGraph).getResultList();
 	}
@@ -52,17 +51,17 @@ public abstract class JPARepository<E> {
 		return typedQuery;
 	}
 
-	@Transactional
+	@Transactional(transactionManager = "transactionManager2")
 	public void create(E entity) {
 		em.persist(entity);
 	}
 
-	@Transactional
+	@Transactional(transactionManager = "transactionManager2")
 	public void save(E entity) {
 		em.merge(entity);
 	}
 
-	@Transactional
+	@Transactional(transactionManager = "transactionManager2")
 	public void deleteById(Object id) {
 		E entity = em.find(entityClass, id);
 		if (entity != null)

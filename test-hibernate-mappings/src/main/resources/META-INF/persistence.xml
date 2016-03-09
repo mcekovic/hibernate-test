@@ -6,4 +6,10 @@
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 		<shared-cache-mode>DISABLE_SELECTIVE</shared-cache-mode>
 	</persistence-unit>
+	<persistence-unit name="TestPersistenceUnit2" transaction-type="RESOURCE_LOCAL">
+		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+		<mapping-file>META-INF/orm2.xml</mapping-file>
+		<class>org.strangeforest.hibernate.entities.projected.Player2</class>
+		<shared-cache-mode>DISABLE_SELECTIVE</shared-cache-mode>
+	</persistence-unit>
 </persistence>
